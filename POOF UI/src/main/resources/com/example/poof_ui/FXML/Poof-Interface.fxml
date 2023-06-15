@@ -215,7 +215,7 @@
                                     </GridPane>
                                     <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                                        <content>
-                                          <TilePane fx:id="minersTile" hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefColumns="4" prefRows="4" prefTileHeight="80.0" prefTileWidth="80.0" vgap="60.0">
+                                          <TilePane fx:id="minersTile" hgap="20.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefColumns="4" prefRows="4" prefTileHeight="80.0" prefTileWidth="80.0" vgap="80.0">
                                              <padding>
                                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                                              </padding>

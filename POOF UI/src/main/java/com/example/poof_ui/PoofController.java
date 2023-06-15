@@ -192,9 +192,10 @@ public class PoofController implements Initializable {
         Platform.runLater(() -> minerGUI.SetHashLabel(hash));
     }
 
-    public void SetMinerGUICoin(MinerGUI minerGUI, String coin)
+    public void SetMinerGUICoin(MinerGUI minerGUI, String coin, String color)
     {
         Platform.runLater(() -> minerGUI.SetCoinLabel(coin));
+        Platform.runLater(() -> minerGUI.SetWalletColor(color));
     }
 
     public void AddTraderGUI(TraderGUI traderGUI)

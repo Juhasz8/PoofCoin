@@ -29,7 +29,8 @@ public class User extends Thread
     public Random random = new Random();
 
     //for rounding numbers up to 2 decimal
-    protected DecimalFormat decFormatter = new DecimalFormat("0.0");
+    protected DecimalFormat decFormatter = new DecimalFormat("POOF: 0.0");
+    protected DecimalFormat powerFormatter = new DecimalFormat("PWR: 0");
 
     protected int cycleUntilPossibleNextExchange;
 

@@ -54,4 +54,8 @@ public class MinerGUI extends AnchorPane {
     {
         CoinLabel.setText(coin);
     }
+
+    public void SetWalletColor(String color){
+        CoinLabel.setStyle(color);
+    }
 }

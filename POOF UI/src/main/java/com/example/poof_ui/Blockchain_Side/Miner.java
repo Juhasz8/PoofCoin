@@ -34,6 +34,9 @@ public class Miner extends User
 
     //just for debugging until we have actual names for miners
     private int indexInUsersList;
+    private String redColor = "-fx-background-color: #ff5e57;";
+    private String greenColor = "-fx-background-color: #4FCB59;";
+    private String greyColor = "-fx-background-color: #8D8D8D;";
 
     //this constructor should probably only take the actual mining power and the type of the miner. The power is calculated in the simulationmanager
     public Miner(MinerType type, long sleepTime)
@@ -72,8 +75,9 @@ public class Miner extends User
         }
 
         minerGUI = new MinerGUI();
-        PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(0));
-        PoofController.getInstance().AddMinerGUI(minerGUI, decFormatter.format(miningPower));
+
+        PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(0), greyColor);
+        PoofController.getInstance().AddMinerGUI(minerGUI, powerFormatter.format(miningPower));
     }
 
 
@@ -427,10 +431,16 @@ public class Miner extends User
         cycleUntilPossibleNextExchange = random.nextInt(3)+1;
     }
 
+
+
     @Override
     public void IncreaseWallet(double amount)
     {
         super.IncreaseWallet(amount);
-        PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet));
+        if (amount < 0){
+            PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), redColor);
+        } else  {
+            PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), greenColor);
+        }
     }
 }
