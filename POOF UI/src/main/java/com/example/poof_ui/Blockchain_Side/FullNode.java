@@ -23,7 +23,6 @@ public class FullNode
 
     public ArrayList<Transaction> waitingTransSinceLastTrustedBlock = new ArrayList<>();
 
-
     public FullNode()
     {
 
@@ -159,14 +158,12 @@ public class FullNode
         lastTrustedBlock = fullNodeblock;
         fullNodeblock.block.isTrusted = true;
 
-        String previousHash = GetLastTrustedBlockHash();
-
         TrustedBlocksGUI trustedBlocksGUI = new TrustedBlocksGUI();
-        trustedBlocksGUI.setPreviousHash(previousHash);
-        //trustedBlocksGUI.setHashNumber(fullNodeBlock.block.hash);
-        //trustedBlocksGUI.setMinersPublicKey(fullNodeBlock.luckyMinerPublicKey);
-        //trustedBlocksGUI.setMerkleRoot(fullNodeBlock.block.GetMerkleRoot());
-        trustedBlocksGUI.setBlockNumber(String.valueOf(blockChains.size()-1));
+        trustedBlocksGUI.setPreviousHash(fullNodeblock.block.previousHash);
+        trustedBlocksGUI.setHashNumber(fullNodeblock.block.hash);
+        trustedBlocksGUI.setMinersPublicKey(fullNodeblock.luckyMinerPublicKey);
+        trustedBlocksGUI.setMerkleRoot(fullNodeblock.block.GetMerkleRoot());
+        trustedBlocksGUI.setBlockNumber(String.valueOf(lastTrustedBlockIndex));
         PoofController.getInstance().AddTrustedBlockGUI(trustedBlocksGUI);
 
         //we basically do all the transactions on this block ledger
