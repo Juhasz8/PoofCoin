@@ -1,0 +1,150 @@
+// Tabs Styling
+
+// For each element, set the following:
+// - primary color to Light Grey #001845
+// - secondary color to Blue: #0466c8
+// - focus color to secondary color
+* {
+	-fx-primary-color: #2a2d30;
+	-fx-secondary-color: #3474f0;
+	-fx-focus-color: -fx-secondary-color;
+}
+
+// Set the following styles for the tab header area:
+// - background color to primary color
+// - border color to secondary color
+// - border width to 1 pixels on top
+.tab-header-area .tab-header-background {
+	-fx-background-color: -fx-primary-color;
+	-fx-border-color:  #1e1f22;
+	-fx-border-width: 1 0 0 0;
+}
+
+// Set the following styles for the selected tab:
+// - background color to secondary color
+// - background insets to 0 pixels on all sides
+// - background radius to 0 pixels on all corners
+.tab-pane .tab:selected {
+	-fx-background-color: -fx-secondary-color;
+	-fx-background-insets: 0 0 0 0;
+	-fx-background-radius: 0 0 0 0;
+}
+
+// Set the following styles for the tab label:
+// - center alignment
+// - white text fill
+// - Arial font family
+// - bold font weight
+.tab .tab-label {
+	-fx-alignment: CENTER;
+	-fx-text-fill: white;
+	-fx-font-family: ARIAL;
+	-fx-font-weight: bold;
+}
+
+// For tab panes at the top, set the following styles for the tab header area:
+// - padding to 0 pixels on all sides
+.tab-pane:top *.tab-header-area {
+	-fx-padding: 0 0 0 0;
+}
+
+// Set the following styles for the tab pane:
+// - transparent background color
+// - minimum tab width of 50 pixels
+.tab-pane {
+	-fx-background-color: transparent;
+	-fx-tab-min-width: 50px;
+}
+
+// Set the following style for the tab:
+// - transparent background color
+.tab-pane .tab {
+	-fx-background-color: transparent;
+}
+
+// Set the following styles for the selected tabs focus indicator:
+// - border width to 0 pixels
+// - border insets to 0 pixels on all sides
+// - border radius to 0 pixels
+.tab-pane:focused .tab-header-area .headers-region .tab:selected .focus-indicator {
+	-fx-border-width: 0;
+	-fx-border-insets: 0 0 0 0;
+	-fx-border-radius: 0;
+}
+
+
+// Button Styling
+
+// Set the following styles for all buttons:
+// - background radius of 5 pixels
+// - Arial font family
+// - bold font weight
+// - font size of 1.5 em
+.button{
+	-fx-background-radius: 5;
+	-fx-font-family: ARIAL;
+	-fx-font-weight: bold;
+	-fx-font-size: 1.5em;
+}
+
+// Set the following style for hovering buttons:
+// - opacity of 90%
+.button: hover{
+	-fx-opacity: 90%;
+}
+
+// Set the following style for pressed buttons:
+// - opacity of 70%
+.button: pressed{
+	-fx-opacity: 70%;
+}
+
+// Set the following style for the button with the ID "buttonBuy":
+// - background color of #4FCB59
+#buttonBuy {
+	-fx-background-color: #4FCB59;
+}
+
+#buttonSell {
+    -fx-background-color: #ff5e57;
+}
+
+#play_button, #restart_button {
+    -fx-background-color: transparent;
+}
+
+
+// CHART
+
+.chart{
+    -fx-background-color: #000000;
+
+    -fx-font-size: 10;
+    -fx-text-fill: white;
+    -fx-legend-visible: false;
+    -fx-vertical-zero-line-visible: false;
+}
+
+.chart-plot-background {
+    -fx-background-color:transparent;
+}
+
+.default-color0.chart-series-line { -fx-stroke: #73B902; }
+
+// Scroll Pane
+
+.scroll-pane {
+    -fx-background-color: transparent; /* Set background color */
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent; /* Set viewport background color */
+}
+
+.scroll-pane > .scroll-bar:vertical > .thumb {
+    -fx-background-color: #1e1f22; /* Set vertical scrollbar thumb color */
+}
+
+.scroll-pane > .scroll-bar:horizontal > .thumb {
+    -fx-background-color: #1e1f22; /* Set horizontal scrollbar thumb color */
+}

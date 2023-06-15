@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="80.0" minWidth="80.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Circle radius="40.0" stroke="#8d8d8d" strokeType="INSIDE" strokeWidth="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <ImageView fx:id="traderPp" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Label fx:id="CoinLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="17.0" prefWidth="80.0" text="Coin" textAlignment="CENTER" textFill="WHITE" wrapText="true" />
+   </children>
+</AnchorPane>

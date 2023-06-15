@@ -1,0 +1,18 @@
+This is the to do list for the Creative Side.
+
+· Connect the MinersGUI class to the simulation [NOT DONE] Assigned to: ******
+    - The outer "ring" should change color to blue when active, green when succeeded, red when failed, grey inactive.
+
+· Connect the TradersGUI class to the simulation [NOT DONE] Assigned to: ******
+    - The outer "ring" should change color to blue when active, green when succeeded, red when failed, grey inactive.
+    - Connect the traders to the transaction blocks so a transaction block will appear when a transaction is happening.
+      The line should be blue when active, green when succeeded, red when failed.
+
+· Create the list of current events (20) with their properties [NOT DONE] Assigned to: Diego
+    - Properties: Probability, Maximum Repetition over the course of Week, Month, Year...
+
+· Create the PersonalWallet class [NOT DONE] Assigned to: ******
+    - The wallet should have an initial value and should connect to the buy and sell buttons
+
+· Activate the buy and sell buttons [NOT DONE] Assigned to: ******
+    - The buttons should open a new, smaller pop-up window with further controls for buying and selling.
