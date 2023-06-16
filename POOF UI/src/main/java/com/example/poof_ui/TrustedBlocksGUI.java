@@ -31,9 +31,8 @@ public class TrustedBlocksGUI extends AnchorPane {
     private Label merkleRoot;
     @FXML
     private Label previousHash;
-
     @FXML
-    private Label transactionLabel;
+    private AnchorPane transactionPane;
 
     public void setBlockNumber(String blockNumberString)
     {
@@ -54,7 +53,7 @@ public class TrustedBlocksGUI extends AnchorPane {
     public void setPreviousHash(String previousHashString) { previousHash.setText(previousHashString);}
 
     public void setTransactionLabel(String transactionLabelString){
-        transactionLabel.setText(transactionLabelString);
-        transactionLabel.setWrapText(true);
+        Transactions newTransaction = new Transactions(transactionLabelString);
+        transactionPane.getChildren().add(newTransaction);
     }
 }
