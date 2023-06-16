@@ -44,10 +44,6 @@ public class PoofController implements Initializable {
     @FXML
     private ScrollPane currentEventsScroll;
     @FXML
-    private Button buttonBuy;
-    @FXML
-    private Button buttonSell;
-    @FXML
     private Button restart_button;
     @FXML
     private ImageView play_image;
@@ -57,9 +53,6 @@ public class PoofController implements Initializable {
     private LineChart<?, ?> lineChart;
     @FXML
     private ScrollPane chartScroll;
-
-    @FXML
-    private TilePane blockchain_Tile;
     @FXML
     private TilePane tradersTile;
     @FXML
@@ -306,13 +299,5 @@ public class PoofController implements Initializable {
         // Call the start method of the new instance with the current stage
         poofApp.start(stage);
         //SimulationManager.getInstance().RestartSimulation();
-    }
-    @FXML
-    void buyPoofs(ActionEvent event) throws IOException {
-        // Opens the poof market modal in buy mode (tab)
-    }
-    @FXML
-    void sellPoofs(ActionEvent event) throws IOException {
-        // Opens the poof market modal in sell mode (tab)
     }
 }
