@@ -191,6 +191,10 @@ public class PoofController implements Initializable {
         Platform.runLater(() -> minerGUI.SetWalletColor(color));
     }
 
+    public void SetMinerColor(MinerGUI minerGUI, String color){
+        Platform.runLater(() -> minerGUI.SetWalletColor(color));
+    }
+
     public void AddTraderGUI(TraderGUI traderGUI)
     {
         Platform.runLater(() -> tradersTile.getChildren().add(traderGUI));
