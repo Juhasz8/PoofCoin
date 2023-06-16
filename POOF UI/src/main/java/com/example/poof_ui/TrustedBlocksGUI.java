@@ -55,5 +55,6 @@ public class TrustedBlocksGUI extends AnchorPane {
 
     public void setTransactionLabel(String transactionLabelString){
         transactionLabel.setText(transactionLabelString);
+        transactionLabel.setWrapText(true);
     }
 }
