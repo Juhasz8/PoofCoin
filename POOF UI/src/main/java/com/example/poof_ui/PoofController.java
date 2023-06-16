@@ -66,6 +66,27 @@ public class PoofController implements Initializable {
     @FXML
     private TilePane BlockchainViewTile;
 
+    @FXML
+    private Label br1;
+    @FXML
+    private Label br2;
+    @FXML
+    private Label br3;
+    @FXML
+    private Label br4;
+    @FXML
+    private Label br5;
+    @FXML
+    private Label sr1;
+    @FXML
+    private Label sr2;
+    @FXML
+    private Label sr3;
+    @FXML
+    private Label sr4;
+    @FXML
+    private Label sr5;
+
     // Chart data
     private XYChart.Series series1;
     private List<Double> lastTwoValues = new ArrayList<>();
@@ -196,6 +217,10 @@ public class PoofController implements Initializable {
         Platform.runLater(() -> minerGUI.SetWalletColor(color));
     }
 
+    public void SetMinerOutline(MinerGUI minerGUI, String outlineColor){
+        Platform.runLater(() -> minerGUI.SetWalletOutline(outlineColor));
+    }
+
     public void AddTraderGUI(TraderGUI traderGUI)
     {
         Platform.runLater(() -> tradersTile.getChildren().add(traderGUI));
@@ -205,6 +230,24 @@ public class PoofController implements Initializable {
     {
         Platform.runLater(() -> traderGUI.SetCoinLabel(coin));
     }
+
+    public void SetBuyingRequestLabelGUI(int[] indexes)
+    {
+        br1.setText(Integer.toString(indexes[0]));
+        br2.setText(Integer.toString(indexes[1]));
+        br3.setText(Integer.toString(indexes[2]));
+        br4.setText(Integer.toString(indexes[3]));
+        br5.setText(Integer.toString(indexes[4]));
+    }
+    public void SetSellingRequestLabelGUI(int[] indexes)
+    {
+        sr1.setText(Integer.toString(indexes[0]));
+        sr2.setText(Integer.toString(indexes[1]));
+        sr3.setText(Integer.toString(indexes[2]));
+        sr4.setText(Integer.toString(indexes[3]));
+        sr5.setText(Integer.toString(indexes[4]));
+    }
+
 
     public void updateMarketPriceLabel(String Price){
         float currentPrice = Float.valueOf(Price);
