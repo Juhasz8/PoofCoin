@@ -91,7 +91,7 @@
                         <Font name="Arial Bold" size="13.0" />
                      </font>
                   </Label>
-                  <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                  <ScrollPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="279.0">
                            <children>
