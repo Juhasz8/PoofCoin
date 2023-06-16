@@ -165,12 +165,12 @@ public class PoofController implements Initializable {
         // Toggle the state of the button
         isPlaying = !isPlaying;
     }
-    public void AddTrustedBlockGUI(TrustedBlocksGUI trustedBlocksGUI)
+    public void AddTrustedBlockGUI(TrustedBlocksGUI trustedBlocksGUI, String transaction)
     {
         // Add a trusted block
         Platform.runLater(() -> BlockchainViewTile.getChildren().add(trustedBlocksGUI));
         // Add a transaction label
-        //Platform.runLater(()-> trustedBlocksGUI.setTransactionLabel());
+        Platform.runLater(()-> trustedBlocksGUI.setTransactionLabel(transaction));
     }
     public void AddMinerGUI(MinerGUI minerGUI, String powerString)
     {
