@@ -153,6 +153,13 @@ public class Miner extends User
                     //Thread.sleep((1/miningPower) * 1000);
                     //Thread.currentThread().wait((long)0.25);
 
+                    Date endDate = new Date();
+                    float numSeconds = ((endDate.getTime()- startDate.getTime()) / 1000);
+
+                    if (numSeconds >= 2) {
+                        PoofController.getInstance().SetMinerColor(minerGUI, greyColor);
+                    }
+
                     Thread.sleep(sleepTime);
 
                 } catch (Exception e) {
@@ -432,10 +439,11 @@ public class Miner extends User
     }
 
 
-
+    Date startDate;
     @Override
     public void IncreaseWallet(double amount)
     {
+        startDate = new Date();
         super.IncreaseWallet(amount);
         if (amount < 0){
             PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), redColor);
