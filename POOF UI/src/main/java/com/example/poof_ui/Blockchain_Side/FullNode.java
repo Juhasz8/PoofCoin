@@ -153,18 +153,45 @@ public class FullNode
         System.out.println("--------------------");
     }
 
+    private void TrustABlockGUI(FullNodeBlock fullNodeBlock)
+    {
+        //creating the trusted block GUI
+        TrustedBlocksGUI trustedBlocksGUI = new TrustedBlocksGUI();
+
+        //setting the values from the fullnodeBlock
+        trustedBlocksGUI.setPreviousHash(fullNodeBlock.block.previousHash);
+        trustedBlocksGUI.setHashNumber(fullNodeBlock.block.hash);
+        trustedBlocksGUI.setMinersPublicKey(fullNodeBlock.luckyMinerPublicKey);
+        trustedBlocksGUI.setMerkleRoot(fullNodeBlock.block.GetMerkleRoot());
+        trustedBlocksGUI.setBlockNumber(String.valueOf(lastTrustedBlockIndex));
+
+        SetTransactionsTextGUI(trustedBlocksGUI, fullNodeBlock);
+
+        //making the Trusted Block GUI visible
+        PoofController.getInstance().AddTrustedBlockGUI(trustedBlocksGUI);
+    }
+
+    private void SetTransactionsTextGUI(TrustedBlocksGUI trustedBlocksGUI, FullNodeBlock fullNodeblock)
+    {
+        String transactionsText = "";
+        for (int i = 0; i < fullNodeblock.block.dataTree.transactions.size(); i++)
+        {
+            Transaction trans = fullNodeblock.block.dataTree.transactions.get(i);
+            transactionsText += Network.getInstance().networkUsers.get(trans.fromPublicKey).name;
+            transactionsText += " sent ";
+            transactionsText += trans.amount;
+            transactionsText += " --> ";
+            transactionsText += Network.getInstance().networkUsers.get(trans.fromPublicKey).name;
+            transactionsText += " ⧹n";
+        }
+    }
+
     private void TrustABlock(FullNodeBlock fullNodeblock)
     {
         lastTrustedBlock = fullNodeblock;
         fullNodeblock.block.isTrusted = true;
 
-        TrustedBlocksGUI trustedBlocksGUI = new TrustedBlocksGUI();
-        trustedBlocksGUI.setPreviousHash(fullNodeblock.block.previousHash);
-        trustedBlocksGUI.setHashNumber(fullNodeblock.block.hash);
-        trustedBlocksGUI.setMinersPublicKey(fullNodeblock.luckyMinerPublicKey);
-        trustedBlocksGUI.setMerkleRoot(fullNodeblock.block.GetMerkleRoot());
-        trustedBlocksGUI.setBlockNumber(String.valueOf(lastTrustedBlockIndex));
-        PoofController.getInstance().AddTrustedBlockGUI(trustedBlocksGUI);
+        TrustABlockGUI(fullNodeblock);
 
         //we basically do all the transactions on this block ledger
         //so everyone gets his money and poffcoin, and the miner gets the rewards and fee aswell
