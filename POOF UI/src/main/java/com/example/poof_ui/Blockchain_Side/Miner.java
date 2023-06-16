@@ -39,9 +39,9 @@ public class Miner extends User
     private String greyColor = "-fx-background-color: #8D8D8D;";
 
     //this constructor should probably only take the actual mining power and the type of the miner. The power is calculated in the simulationmanager
-    public Miner(MinerType type, long sleepTime)
+    public Miner(MinerType type, long sleepTime, String name)
     {
-        super();
+        super(name);
         rand = new Random();
         this.type = type;
         //miningPower = minPower + rand.nextInt(maxPower-minPower); // -> generate a random number between minPower and maxPower
@@ -198,7 +198,7 @@ public class Miner extends User
         //in real life the propagation of the information that a new block was mined is one of the things that make sure
         //that the miners are not trying to guess the same, but since in our simulation the propagation is 0,
         //to make sure they are guessing different numbers they also include their unique public key to make sure they are all getting different hashes
-        return Cryptography.sha256(Long.toString(myblock.timeStamp) + Integer.toString(nonce) + myblock.GetMerkleRoot()) + publicKeyString;
+        return Cryptography.sha256(Long.toString(myblock.timeStamp) + Integer.toString(nonce) + myblock.GetMerkleRoot() + publicKeyString);
     }
 
     //private void ValidateBlock
@@ -288,22 +288,20 @@ public class Miner extends User
     {
         //the previous hash will be updated according to the relation between my current block I am working on and this new block that was mined by someone else
         //we do this check simply by comparing the merkle root of the new block that was mined and the block I am trying to mine
-        System.out.println("I am Mr_" + indexInUsersList + " somebody else mined a new block! ");
+        //System.out.println("I am Mr_" + indexInUsersList + " somebody else mined a new block! ");
 
         //check if the new block mined by someone else is trusted by you or not
         if(newBlock.GetMerkleRoot() != myblock.GetMerkleRoot())
         {
-            System.out.println("I am Mr_" + indexInUsersList + " I DON'T trust the new block! ");
+            //System.out.println("I am Mr_" + indexInUsersList + " I DON'T trust the new block! ");
             //either the miner of the new block is trying to cheat or this miner is trying to cheat
             //so you keep mining your block
             return;
         }
-        System.out.println("I am Mr_" + indexInUsersList + " I trust the new block! ");
+        //System.out.println("I am Mr_" + indexInUsersList + " I trust the new block! ");
 
         //this miner trusts the block that was mined by someone else because it contains the same transactions
         ITrustANewBlock(newBlock.hash);
-
-
 
     }
 

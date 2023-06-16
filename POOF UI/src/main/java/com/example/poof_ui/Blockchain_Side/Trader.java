@@ -14,9 +14,9 @@ public class Trader extends User
 
     private TraderGUI traderGUI;
 
-    public Trader(TraderType type)
+    public Trader(TraderType type, String name)
     {
-        super();
+        super(name);
         this.type = type;
         Network.getInstance().JoinTraderToTheNetwork(this);
 

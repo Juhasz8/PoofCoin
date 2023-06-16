@@ -3,6 +3,7 @@ package com.example.poof_ui.Blockchain_Side;
 import com.example.poof_ui.PoofController;
 import com.example.poof_ui.TrustedBlocksGUI;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
@@ -22,6 +23,9 @@ public class FullNode
     private int blockTrustingLimit = 2;   //this means in this blockchain:  A(first block is already trusted) -> B -> C -> D   ----> B gets trusted after D is mined
 
     public ArrayList<Transaction> waitingTransSinceLastTrustedBlock = new ArrayList<>();
+
+    //for rounding numbers up to 2 decimal
+    protected DecimalFormat decFormatter = new DecimalFormat("0.0");
 
     public FullNode()
     {
@@ -179,11 +183,11 @@ public class FullNode
             Transaction trans = fullNodeblock.block.dataTree.transactions.get(i);
             transactionsText += Network.getInstance().networkUsers.get(trans.fromPublicKey).name;
             transactionsText += " sent ";
-            transactionsText += trans.amount;
+            transactionsText += decFormatter.format(trans.amount);
             transactionsText += " --> ";
-            transactionsText += Network.getInstance().networkUsers.get(trans.fromPublicKey).name;
-            transactionsText += " ⧹n";
+            transactionsText += Network.getInstance().networkUsers.get(trans.toPublicKey).name;
         }
+        trustedBlocksGUI.setTransactionLabel(transactionsText);
     }
 
     private void TrustABlock(FullNodeBlock fullNodeblock)

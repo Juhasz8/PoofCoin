@@ -7,7 +7,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Random;
 
-public class User extends Thread
+public abstract class User extends Thread
 {
 
     public String name;
@@ -34,8 +34,10 @@ public class User extends Thread
 
     protected int cycleUntilPossibleNextExchange;
 
-    public User()
+    public User(String name)
     {
+        this.name = name;
+
         try
         {
             KeyPairGenerator keyPairGen = KeyPairGenerator.getInstance("RSA");
@@ -64,13 +66,10 @@ public class User extends Thread
             System.out.println("Keys couldn't be created: " + e);
         }
 
-        name = "minerName";
-
         System.out.println("I joined the network: " + name);
     }
 
     //this is called whenever the transaction is verified
-
     public void IncreaseWallet(double amount)
     {
         if(amount > 0)

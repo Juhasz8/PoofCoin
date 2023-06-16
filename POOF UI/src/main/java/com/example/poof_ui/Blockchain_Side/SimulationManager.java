@@ -3,6 +3,7 @@ package com.example.poof_ui.Blockchain_Side;
 import com.example.poof_ui.CurrentEventManager;
 import com.example.poof_ui.PoofController;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class SimulationManager implements Runnable
@@ -33,6 +34,36 @@ public class SimulationManager implements Runnable
     public RequestLink requestLinkTail;
 
     public float previousMarketPrice;
+
+    private String[] NAMES = new String[]{
+            "Alejandro", "Andrés", "Angel", "Antonio", "Armando", "Arturo", "Benjamín", "Carlos", "César", "Daniel",
+            "David", "Eduardo", "Emilio", "Enrique", "Esteban", "Felipe", "Fernando", "Francisco", "Gabriel", "Germán",
+            "Guillermo", "Ignacio", "Ismael", "Javier", "Jesús", "Jorge", "José", "Juan", "Luis", "Manuel", "Marco",
+            "Mario", "Miguel", "Nicolás", "Pablo", "Pedro", "Rafael", "Ramón", "Raúl", "Ricardo", "Roberto", "Rodrigo",
+            "Salvador", "Samuel", "Santiago", "Sergio", "Víctor", "William", "Xavier", "Yasser", "Abel", "Adrián",
+            "Agustín", "Aitor", "Alán", "Aldo", "Álvaro", "Amado", "Amaury", "Ángel Luis", "Aníbal", "Ariel", "Arnaldo",
+            "Arturo", "Axel", "Baltasar", "Bautista", "Bernardo", "Braulio", "Bruno", "Camilo", "Cándido",
+            "César Augusto", "Claudio", "Cornelio", "Cristian", "Cristóbal", "Damián", "Danilo", "Darío", "Delfín",
+            "Diego", "Dimas", "Dionisio", "Domingo", "Edmundo", "Eduardo José", "Efraín", "Eladio", "Elías", "Eliezer",
+            "Elpidio", "Eloy", "Elvis", "Emiliano", "Eneas", "Epifanio", "Ernesto", "Eulogio", "Ezequiel", "Fabián",
+            "Fausto", "Félix", "Fermín", "Fidel", "Filiberto", "Florián", "Fortunato", "Gabriel", "Gadiel", "Gaspar",
+            "Genaro", "Geraldo", "Gerardo", "Gilberto", "Gonzalo", "Gregorio", "Gumersindo", "Gustavo", "Heriberto",
+            "Hermógenes", "Higinio", "Hilario", "Homero", "Honorio", "Horacio", "Hugo", "Humberto", "Iker", "Inocencio",
+            "Isaac", "Isaías", "Isidro", "Ismael", "Israel", "Ítalo", "Jacobo", "Jaime", "Janiel", "Jardiel", "Jeremías",
+            "Joel", "Jonás", "Jorge Luis", "Josafat", "Joselito", "Josué", "Jovanny", "Juan Carlos", "Juan Pablo",
+            "Juan Ramón", "Julián", "Julio", "Julián Alberto", "Laureano", "Lázaro", "Leandro", "Leocadio", "Leonel",
+            "Leonardo", "Leopoldo", "Lisandro", "Lorenzo", "Lucas", "Luciano", "Luis Alberto", "Luis Enrique",
+            "Luis Fernando", "Luís Manuel", "Luís Miguel", "Luís Ramón", "Luís Roberto", "Luisito", "Macario",
+            "Manuel Alejandro", "Marcelino", "Marcelo", "Marco Antonio", "Marcos", "Mario Alberto", "Mario Antonio",
+            "Mario José", "Mario Luis", "Mario Roberto", "Martín", "Mateo", "Matías", "Mauricio", "Maximiliano",
+            "Melchor", "Miguel Ángel", "Moisés", "Nahun", "Néstor", "Nicanor", "Nicolás Antonio", "Octavio", "Odalis",
+            "Olegario", "Omar", "Onofre", "Orlando", "Osvaldo", "Otto", "Pablo Antonio", "Pascual", "Patricio",
+            "Pedro Antonio", "Primitivo", "Ramón Antonio", "Ramón Emilio", "Raúl Alberto", "Raúl Andrés", "Raúl Antonio",
+            "Raúl Emilio", "Raúl Francisco", "Raúl José", "Raúl Manuel", "Raúl Ramón", "Régulo", "Reinaldo", "Renato",
+            "Ricardo Antonio", "Ricardo José", "Ricardo Manuel", "Ricardo Ramón", "Richard", "Roberto Antonio",
+            "Roberto Carlos", "Roberto José", "Roberto Manuel", "Robinson", "Rodolfo", "Rodrigo Antonio", "Rodrigo José",
+            "Rodrigo Manuel", "Rogelio", "Rolando", "Román", "Rommel", "Ronny", "Roque", "Rubén", "Rubiel", "Rufino",
+            "Salvador Antonio", "Samuel Antonio", "Samuel"};
 
     //getters for the total values
     public int GetSellingRequestAmount()
@@ -100,6 +131,11 @@ public class SimulationManager implements Runnable
     //----------------
 
 
+    public String GetRandomNameGenerator()
+    {
+        return NAMES[random.nextInt(245)];
+    }
+
     public static SimulationManager getInstance() {
         if (instance == null)
             instance = new SimulationManager();
@@ -113,7 +149,7 @@ public class SimulationManager implements Runnable
         //Miner miner1 = new Miner(10, 11, MinerType.THAT_ONE_GUY, GetMinerSleepingTime(MinerType.THAT_ONE_GUY));
         //miner1.start();
 
-        Miner miner2 = new Miner(MinerType.HUGE_CORP, GetMinerSleepingTime(MinerType.HUGE_CORP));
+        Miner miner2 = new Miner(MinerType.HUGE_CORP, GetMinerSleepingTime(MinerType.HUGE_CORP), GetRandomNameGenerator());
         miner2.start();
 
 
@@ -170,7 +206,7 @@ public class SimulationManager implements Runnable
                 typeToJoin = TraderType.PSYCHOPATH;
 
             //join the first trader to the simulation
-            Trader firstTrader = new Trader(typeToJoin);
+            Trader firstTrader = new Trader(typeToJoin, GetRandomNameGenerator());
             firstTrader.start();
             //return cause in this cycle only this trader should join
             return;
@@ -250,7 +286,7 @@ public class SimulationManager implements Runnable
             if(Network.getInstance().GetMinerAmount() == 60)
                 break;
 
-            Miner newMiner = new Miner(MinerType.HUGE_CORP, GetMinerSleepingTime(MinerType.HUGE_CORP));
+            Miner newMiner = new Miner(MinerType.HUGE_CORP, GetMinerSleepingTime(MinerType.HUGE_CORP), GetRandomNameGenerator());
             newMiner.start();
         }
 
@@ -259,7 +295,7 @@ public class SimulationManager implements Runnable
             if(Network.getInstance().GetTraderAmount() == 60)
                 break;
 
-            Trader newTrader = new Trader(TraderType.RISK_APPETITE);
+            Trader newTrader = new Trader(TraderType.RISK_APPETITE, GetRandomNameGenerator());
             newTrader.start();
         }
 
