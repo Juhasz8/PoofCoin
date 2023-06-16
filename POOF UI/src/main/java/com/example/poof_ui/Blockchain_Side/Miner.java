@@ -12,7 +12,7 @@ enum MinerType { THAT_ONE_GUY, THESE_GUYS, GROUP, SMALL_CORP, HUGE_CORP }
 
 public class Miner extends User
 {
-    private float miningPower;
+    private double miningPower;
     private Random rand;
     int numberOfTransactions = 0;
     private ArrayList<Transaction> waitingTrans = new ArrayList<>();
@@ -30,7 +30,7 @@ public class Miner extends User
 
     private MinerGUI minerGUI;
 
-    private long sleepTime;
+    private double sleepTime;
 
     //just for debugging until we have actual names for miners
     private int indexInUsersList;
@@ -39,14 +39,15 @@ public class Miner extends User
     private String greyColor = "-fx-background-color: #8D8D8D;";
 
     //this constructor should probably only take the actual mining power and the type of the miner. The power is calculated in the simulationmanager
-    public Miner(MinerType type, long sleepTime, String name)
+    public Miner(MinerType type, double sleepTime, String name)
     {
         super(name);
         rand = new Random();
         this.type = type;
         //miningPower = minPower + rand.nextInt(maxPower-minPower); // -> generate a random number between minPower and maxPower
         //miningPower = 10;
-        this.miningPower = (1/(float)sleepTime * 10000);
+        this.miningPower = ((1/sleepTime) * 1000);
+
         System.out.println("POWER: " + miningPower);
 
         this.sleepTime = sleepTime;
@@ -153,14 +154,19 @@ public class Miner extends User
                     //Thread.sleep((1/miningPower) * 1000);
                     //Thread.currentThread().wait((long)0.25);
 
-                    Date endDate = new Date();
-                    float numSeconds = ((endDate.getTime()- startDate.getTime()) / 1000);
 
-                    if (numSeconds >= 2) {
-                        PoofController.getInstance().SetMinerColor(minerGUI, greyColor);
+                    //if your color already turned green once
+                    if(startDate != null)
+                    {
+                        Date endDate = new Date();
+                        float numSeconds = ((endDate.getTime() - startDate.getTime()) / 1000);
+
+                        if (numSeconds >= 2) {
+                            PoofController.getInstance().SetMinerColor(minerGUI, greyColor);
+                        }
                     }
 
-                    Thread.sleep(sleepTime);
+                    Thread.sleep((long)sleepTime);
 
                 } catch (Exception e) {
                     System.out.println(e);
@@ -298,14 +304,14 @@ public class Miner extends User
         //System.out.println("I am Mr_" + indexInUsersList + " somebody else mined a new block! ");
 
         //check if the new block mined by someone else is trusted by you or not
-        if(newBlock.GetMerkleRoot() != myblock.GetMerkleRoot())
+        if(!newBlock.GetMerkleRoot().equals(myblock.GetMerkleRoot()))
         {
-            //System.out.println("I am Mr_" + indexInUsersList + " I DON'T trust the new block! ");
+            System.out.println("I am " +name + " I DON'T trust the new block! " + myblock.GetMerkleRoot() + " vs " + newBlock.GetMerkleRoot());
             //either the miner of the new block is trying to cheat or this miner is trying to cheat
             //so you keep mining your block
             return;
         }
-        //System.out.println("I am Mr_" + indexInUsersList + " I trust the new block! ");
+        System.out.println("I am " + name + " I trust the new block! ");
 
         //this miner trusts the block that was mined by someone else because it contains the same transactions
         ITrustANewBlock(newBlock.hash);
@@ -443,6 +449,7 @@ public class Miner extends User
     {
         startDate = new Date();
         super.IncreaseWallet(amount);
+
         if (amount < 0){
             PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), redColor);
         } else  {

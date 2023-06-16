@@ -21,7 +21,7 @@ public class Network
     private float minerReward = 10;
     public float GetMinerReward() { return minerReward; }
 
-    private int miningDifficulty = 2;
+    private int miningDifficulty = 1;
     public int GetDifficulty() { return miningDifficulty; }
 
     private int maxTransactionOnLedger = 15;

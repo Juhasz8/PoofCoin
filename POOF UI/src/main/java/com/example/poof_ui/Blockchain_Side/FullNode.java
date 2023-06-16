@@ -41,12 +41,17 @@ public class FullNode
 
     public synchronized void NotifyNodeThatNewBlockWasMined(FullNodeBlock newFullNodeBlock)
     {
-        System.out.println("I JOINED THE SYNCRONISED METHOD: " + newFullNodeBlock.luckyMinerPublicKey);
+        System.out.println("--------------------------");
+        System.out.println("I JOINED THE SYNCRONISED METHOD: " + Network.getInstance().networkUsers.get(newFullNodeBlock.luckyMinerPublicKey).name);
         System.out.println("with merkle root: " + newFullNodeBlock.block.dataTree.merkleRoot);
+        System.out.println("and with hash: " + newFullNodeBlock.block.hash);
+        System.out.println("and with previous hash: " + newFullNodeBlock.block.previousHash);
+        System.out.println("--------------------------");
+
         //in the case of the very first blockchain that was mined and added, we just add it and trust it immediately (cause its data is empty anyways)
         if(blockChains.size() == 0)
         {
-            System.out.println("VERY FIRST BLOCK ADDED TO THE CHAIN");
+            //System.out.println("VERY FIRST BLOCK ADDED TO THE CHAIN");
             blockChains.add(new ArrayList<>(){});
             blockChains.get(0).add(newFullNodeBlock);
             TrustABlock(newFullNodeBlock);
@@ -63,14 +68,22 @@ public class FullNode
         for(int i = lastTrustedBlockIndex; i < longestChain.size(); i++)
         {
             //if the new blocks previous hash matches up with any of the previous hashes of the longest chain
-            if(newFullNodeBlock.block.previousHash == longestChain.get(i).block.previousHash)
+            if(newFullNodeBlock.block.previousHash.equals(longestChain.get(i).block.previousHash))
             {
+                System.out.println("THE NEW BLOCKK PREVIOUS HASH MATCHES WITH THAT OF INDEX: " + i + "CAUSE PREVI HASH: " + newFullNodeBlock.block.previousHash);
+                if(i == longestChain.size()-1)
+                    System.out.println("(THE LAST BLOCK)");
+
                 // if the new block has the same data as the one that was just mined
                 // -> the second guy didn't get notified yet so he mined the same block and tried to add it
-                if(newFullNodeBlock.block.GetMerkleRoot() == longestChain.get(i).block.GetMerkleRoot())
+                if(newFullNodeBlock.block.GetMerkleRoot().equals(longestChain.get(i).block.GetMerkleRoot()))
                 {
                     System.out.println("The poor second guy was just after the first one, so unlucky! Better luck next time!");
                     return;
+                }
+                else
+                {
+                    System.out.println("they down have the same merkle root!: " + newFullNodeBlock.block.GetMerkleRoot() + " | " + longestChain.get(i).block.GetMerkleRoot());
                 }
                 //Conflict at block number I!!
 
@@ -98,6 +111,8 @@ public class FullNode
             //and add the new block to the currect blockchain
             for (int i = 0; i < blockChains.size(); i++)
             {
+                System.out.println("checking if " + blockChains.get(i).get(blockChains.get(i).size()-1).block.hash+ " equals " + newFullNodeBlock.block.previousHash);
+                //checking if the i'th blockchain contains the hash which the new block has as a previoushash
                 if(blockChains.get(i).get(blockChains.get(i).size()-1).block.hash.equals(newFullNodeBlock.block.previousHash))
                 {
                     //System.out.println("added a new block on an existing chain! ");
@@ -270,4 +285,3 @@ public class FullNode
     }
 
 }
-//wow

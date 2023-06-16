@@ -66,17 +66,18 @@ public abstract class User extends Thread
             System.out.println("Keys couldn't be created: " + e);
         }
 
-        System.out.println("I joined the network: " + name);
+        //System.out.println("I joined the network: " + name);
     }
 
     //this is called whenever the transaction is verified
     public void IncreaseWallet(double amount)
     {
+        /*
         if(amount > 0)
             System.out.println(name + ": My wallet got increased (+" + amount +")");
         else
             System.out.println(name + ": My wallet got decreased (" + amount +")");
-
+        */
         poofWallet += amount;
         hypotheticalPoofWallet += amount;
     }

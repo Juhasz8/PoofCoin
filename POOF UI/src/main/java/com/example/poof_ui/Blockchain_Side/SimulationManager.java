@@ -149,12 +149,9 @@ public class SimulationManager implements Runnable
         //Miner miner1 = new Miner(10, 11, MinerType.THAT_ONE_GUY, GetMinerSleepingTime(MinerType.THAT_ONE_GUY));
         //miner1.start();
 
-        Miner miner2 = new Miner(MinerType.HUGE_CORP, GetMinerSleepingTime(MinerType.HUGE_CORP), GetRandomNameGenerator());
+        Miner miner2 = new Miner(MinerType.THAT_ONE_GUY, GetMinerSleepingTime(MinerType.THAT_ONE_GUY), GetRandomNameGenerator());
         miner2.start();
 
-
-        //Miner miner3 = new Miner(MinerType.HUGE_CORP, GetMinerSleepingTime(MinerType.HUGE_CORP));
-        //miner3.start();
     }
 
     public void run()
@@ -283,16 +280,16 @@ public class SimulationManager implements Runnable
         //we will decide the miner and trader type here, and not in the miner and trader constructor.
         for (int i = 0; i < minerAmountToJoin; i++)
         {
-            if(Network.getInstance().GetMinerAmount() == 60)
+            if(Network.getInstance().GetMinerAmount() == 30)
                 break;
 
-            Miner newMiner = new Miner(MinerType.HUGE_CORP, GetMinerSleepingTime(MinerType.HUGE_CORP), GetRandomNameGenerator());
+            Miner newMiner = new Miner(MinerType.THAT_ONE_GUY, GetMinerSleepingTime(MinerType.THAT_ONE_GUY), GetRandomNameGenerator());
             newMiner.start();
         }
 
         for (int i = 0; i < traderAmountToJoin; i++)
         {
-            if(Network.getInstance().GetTraderAmount() == 60)
+            if(Network.getInstance().GetTraderAmount() == 30)
                 break;
 
             Trader newTrader = new Trader(TraderType.RISK_APPETITE, GetRandomNameGenerator());
@@ -305,7 +302,7 @@ public class SimulationManager implements Runnable
     private void DetermineMarketPrice()
     {
         previousMarketPrice = marketPrice;
-        float marketPriceChange = 0;
+        double marketPriceChange = 0;
 
         //before the first block was mined, the market price stays at 0
         if(Network.getInstance().fullNode.GetLongestChainSize() == 0)
@@ -326,6 +323,18 @@ public class SimulationManager implements Runnable
         else
             marketPriceChange += random.nextFloat(20) - 10; //random number between -10 and 10
 
+        //check whether an event happened or not
+
+
+        //if not, then
+        if(random.nextInt(5) == 0) //there is a 20% chance that the value be just random between these two and not increasing or decreasing
+        {
+            marketPrice += marketPriceChange;
+            if(marketPrice < 0)
+                marketPrice = 0;
+            SetPriceUI();
+            return;
+        }
         // GetBuyingRequestAmountDifference and GetSellingRequestAmountDifference return a pos number if more requests were made this cycle.
 
         //when there are more buying requests, t
@@ -336,11 +345,15 @@ public class SimulationManager implements Runnable
         int buyerSellerDifference = requestLinkHead.cycleBuyingRequestAmount - requestLinkHead.cycleSellingRequestAmount;
         int totalRequests = requestLinkHead.cycleBuyingRequestAmount + requestLinkHead.cycleSellingRequestAmount;
 
+        /*
         System.out.println("...................");
         System.out.println("selling requests last cycle: " + requestLinkHead.cycleSellingRequestAmount);
         System.out.println("buying requests last cycle: " + requestLinkHead.cycleBuyingRequestAmount);
         System.out.println("buyerSellerDifference: " + buyerSellerDifference);
         System.out.println("...................");
+        */
+
+
 
         /*
         //if more people are trying to buy than sell the market price decreases
@@ -353,18 +366,30 @@ public class SimulationManager implements Runnable
         if(buyerSellerDifference < -5 && (requestLinkHead.cycleBuyingRequestAmount/totalRequests) * 100 < 20)
             marketPriceChange += (buyerSellerDifference) * (1+marketPrice/100) * (random.nextFloat(0.75f)+0.75);
         else if (buyerSellerDifference != 0)
-            marketPriceChange += buyerSellerDifference * (1+marketPrice/50) * (random.nextFloat(0.75f)+0.75);
+            marketPriceChange += buyerSellerDifference * (1+marketPrice/100) * (random.nextFloat(0.75f)+0.75);
         else if (totalRequests > 10)
-            marketPriceChange += totalRequests/10 * (1+marketPrice/50) * (random.nextFloat(0.75f)+0.75);
+            marketPriceChange += totalRequests/10 * (1+marketPrice/100) * (random.nextFloat(0.5f)+0.5);
 
+
+        if(marketPrice > 0)
+        {
+            //can only change max 15%
+            if (marketPriceChange > marketPrice * 0.15)
+                marketPriceChange = marketPrice * 0.15;
+            else if (marketPriceChange < -marketPrice * 0.15)
+                marketPriceChange = -marketPrice * 0.15;
+        }
 
         marketPrice += marketPriceChange;
 
         if(marketPrice < 0)
             marketPrice = 0;
 
-        //System.out.println("new market price: " + marketPrice);
+        SetPriceUI();
+    }
 
+    private void SetPriceUI()
+    {
         // Update Market Price Label
         PoofController.getInstance().updateMarketPriceLabel(String.valueOf(marketPrice));
         // Update Price Graph
@@ -395,22 +420,22 @@ public class SimulationManager implements Runnable
         isSuspended = false;
     }
 
-    private long GetMinerSleepingTime(MinerType minerType)
+    private Double GetMinerSleepingTime(MinerType minerType)
     {
         if(minerType == MinerType.THAT_ONE_GUY)
-            return random.nextLong(100)+50;
+            return random.nextDouble(150)+50;  //mining power range -> 5-20
         else if(minerType == MinerType.THESE_GUYS)
-            return random.nextLong(100)+50;
+            return random.nextDouble(25)+25;  //mining power range -> 20-40
         else if(minerType == MinerType.GROUP)
-            return random.nextLong(100)+50;
+            return random.nextDouble(8.35)+16.65;  //mining power range -> 40-60
         else if(minerType == MinerType.SMALL_CORP)
-            return random.nextLong(100)+50;
+            return random.nextDouble(4.15)+12.5;  //mining power range -> 60-80
         else if(minerType == MinerType.HUGE_CORP)
-            return random.nextLong(10)+10;
-            //return 30;
+            return random.nextDouble(7.5)+5;   //mining power range -> 80-200
 
+        //just for safety
         System.out.println("Something went wrong! Non-existing MinerType!");
-        return random.nextLong(100)+50;
+        return random.nextDouble(100)+50;
     }
 
 }

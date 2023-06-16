@@ -68,10 +68,11 @@ public class Trader extends User
 
         if(type == TraderType.RISK_APPETITE) // high risk high reward guy
         {
+            //sells fewer times
+            exchange.difference = random.nextInt(175)-75; //random difference between -75 and 100
+
             //whatever he decides to do, he will deal with a lot of his current money or poof
             exchange.percent = random.nextDouble(.4)+0.35; //will deal with 35-75% of his current currency
-
-            //sells fewer times
 
             //buys if the price is very low, or the amount of people buying is very few
 
