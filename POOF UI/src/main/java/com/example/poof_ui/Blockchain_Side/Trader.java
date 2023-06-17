@@ -33,8 +33,8 @@ public class Trader extends User
             {
                 try
                 {
-                    if (isSuspended)
-                        wait();
+                    while(isSuspended)
+                        wait(10);
 
                     if(cycleUntilPossibleNextExchange > 0)
                         cycleUntilPossibleNextExchange--;

@@ -4,6 +4,8 @@ import com.example.poof_ui.CurrentEventManager;
 import com.example.poof_ui.PoofController;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class SimulationManager implements Runnable
@@ -35,7 +37,7 @@ public class SimulationManager implements Runnable
 
     public float previousMarketPrice;
 
-    private String[] NAMES = new String[]{
+    private ArrayList<String> NAMES = new ArrayList<>(Arrays.asList(
             "Alejandro", "Andrés", "Angel", "Antonio", "Armando", "Arturo", "Benjamín", "Carlos", "César", "Daniel",
             "David", "Eduardo", "Emilio", "Enrique", "Esteban", "Felipe", "Fernando", "Francisco", "Gabriel", "Germán",
             "Guillermo", "Ignacio", "Ismael", "Javier", "Jesús", "Jorge", "José", "Juan", "Luis", "Manuel", "Marco",
@@ -63,7 +65,7 @@ public class SimulationManager implements Runnable
             "Ricardo Antonio", "Ricardo José", "Ricardo Manuel", "Ricardo Ramón", "Richard", "Roberto Antonio",
             "Roberto Carlos", "Roberto José", "Roberto Manuel", "Robinson", "Rodolfo", "Rodrigo Antonio", "Rodrigo José",
             "Rodrigo Manuel", "Rogelio", "Rolando", "Román", "Rommel", "Ronny", "Roque", "Rubén", "Rubiel", "Rufino",
-            "Salvador Antonio", "Samuel Antonio", "Samuel"};
+            "Salvador Antonio", "Samuel Antonio", "Samuel"));
 
     //getters for the total values
     public int GetSellingRequestAmount()
@@ -133,7 +135,10 @@ public class SimulationManager implements Runnable
 
     public String GetRandomNameGenerator()
     {
-        return NAMES[random.nextInt(245)];
+        int randomIndex = random.nextInt(NAMES.size());
+        String randomName = NAMES.get(randomIndex);
+        NAMES.remove(randomIndex);
+        return randomName;
     }
 
     public static SimulationManager getInstance() {
@@ -146,12 +151,11 @@ public class SimulationManager implements Runnable
     private SimulationManager()
     {
         //make the very first miner join the network
-        //Miner miner1 = new Miner(10, 11, MinerType.THAT_ONE_GUY, GetMinerSleepingTime(MinerType.THAT_ONE_GUY));
-        //miner1.start();
-
-        Miner miner2 = new Miner(MinerType.GROUP, GetMinerSleepingTime(MinerType.GROUP), GetRandomNameGenerator());
-        miner2.start();
-
+        for (int i = 0; i < 2; i++)
+        {
+            Miner miner1 = new Miner(MinerType.THESE_GUYS, GetMinerSleepingTime(MinerType.THESE_GUYS), GetRandomNameGenerator());
+            miner1.start();
+        }
     }
 
     public void run()
@@ -163,7 +167,7 @@ public class SimulationManager implements Runnable
                 try
                 {
                     while (isSuspended)
-                        wait();
+                        wait(10);
 
                     DetermineMarketPrice();
                     JoiningPeople();
@@ -184,6 +188,7 @@ public class SimulationManager implements Runnable
         // (after that the price will go up so this won't return)
         if(marketPrice == 0)
             return;
+
 
         //create the user objects and their threads respectively
 
@@ -283,7 +288,7 @@ public class SimulationManager implements Runnable
             if(Network.getInstance().GetMinerAmount() == 30)
                 break;
 
-            Miner newMiner = new Miner(MinerType.THAT_ONE_GUY, GetMinerSleepingTime(MinerType.THAT_ONE_GUY), GetRandomNameGenerator());
+            Miner newMiner = new Miner(MinerType.THESE_GUYS, GetMinerSleepingTime(MinerType.THESE_GUYS), GetRandomNameGenerator());
             newMiner.start();
         }
 
@@ -295,7 +300,6 @@ public class SimulationManager implements Runnable
             Trader newTrader = new Trader(TraderType.RISK_APPETITE, GetRandomNameGenerator());
             newTrader.start();
         }
-
 
     }
 

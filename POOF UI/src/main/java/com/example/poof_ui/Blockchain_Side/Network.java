@@ -54,7 +54,7 @@ public class Network
         }
     }
 
-    private void TryToMatch()
+    private synchronized void TryToMatch()
     {
 
         if(sellingRequests.size() == 0 || buyingRequests.size() == 0)
@@ -81,6 +81,7 @@ public class Network
 
             for(int i = 0; i < miners.size(); i++)
             {
+                //System.out.println("Send message to : " + miners.get(i).name + " about a transaction! ");
                 miners.get(i).ProcessLedger(transaction);
             }
 
@@ -162,7 +163,7 @@ public class Network
         networkUsers.put(trader.publicKeyString, trader);
     }
 
-    public void NewBlockWasMined(Block newBlock, String luckyMinerPublicKey)
+    public synchronized void NewBlockWasMined(Block newBlock, String luckyMinerPublicKey)
     {
         System.out.println("miner: + " + luckyMinerPublicKey);
         System.out.println("is trying to enter method with root: + " + newBlock.dataTree.merkleRoot);
@@ -170,13 +171,16 @@ public class Network
         fullNode.NotifyNodeThatNewBlockWasMined(new FullNodeBlock(newBlock, luckyMinerPublicKey));
     }
 
-    public void NotifyMinersAboutNewBlockMined(FullNodeBlock fullNodeBlock)
+    public synchronized void NotifyMinersAboutNewBlockMined(FullNodeBlock fullNodeBlock)
     {
         //we notify every miner in the network about the new Block
         for(int i = 0; i < miners.size(); i++)
         {
             if(miners.get(i).publicKeyString != fullNodeBlock.luckyMinerPublicKey)
+            {
+                //System.out.println("Notify: " + miners.get(i).name + " that somebody else mined a block! ");
                 miners.get(i).SomebodyElseMinedABlock(fullNodeBlock.block);
+            }
         }
     }
 

@@ -64,6 +64,6 @@ public class MinerGUI extends AnchorPane {
     }
 
     public void SetWalletOutline(String outlineColor) {
-        outline.setFill(Paint.valueOf(outlineColor));
+        //outline.setFill(Paint.valueOf(outlineColor));
     }
 }

@@ -20,7 +20,7 @@ public class FullNode
 
     private int lastTrustedBlockIndex = 0;
 
-    private int blockTrustingLimit = 2;   //this means in this blockchain:  A(first block is already trusted) -> B -> C -> D   ----> B gets trusted after D is mined
+    private int blockTrustingLimit = 1;   //this means in this blockchain:  A(first block is already trusted) -> B -> C -> D   ----> B gets trusted after D is mined
 
     public ArrayList<Transaction> waitingTransSinceLastTrustedBlock = new ArrayList<>();
 
@@ -31,7 +31,7 @@ public class FullNode
     {
 
     }
-    public String GetLastTrustedBlockHash()
+    public synchronized String GetLastTrustedBlockHash()
     {
         if(lastTrustedBlock == null)
             return "-";
@@ -132,7 +132,7 @@ public class FullNode
 
             longestChain = GetLongestChain();
             //trust a block in the past
-            if(longestChain.size() >= 4)
+            if(longestChain.size() >= 2+blockTrustingLimit)
             {
                 lastTrustedBlockIndex++;
                 FullNodeBlock blockToBeTrusted = longestChain.get(lastTrustedBlockIndex);
@@ -153,7 +153,9 @@ public class FullNode
         DebugPrintingOfBlockchains();
     }
 
-    private void DebugPrintingOfBlockchains()
+
+
+    private synchronized void DebugPrintingOfBlockchains()
     {
         System.out.println("Blockchains: ");
         for (int i = 0; i < blockChains.size(); i++)
@@ -172,7 +174,7 @@ public class FullNode
         System.out.println("--------------------");
     }
 
-    private void TrustABlockGUI(FullNodeBlock fullNodeBlock)
+    private synchronized void TrustABlockGUI(FullNodeBlock fullNodeBlock)
     {
         //creating the trusted block GUI
         TrustedBlocksGUI trustedBlocksGUI = new TrustedBlocksGUI();
@@ -192,7 +194,12 @@ public class FullNode
         //PoofController.getInstance().AddTrustedBlockGUI(trustedBlocksGUI);
     }
 
-    private void SetTransactionsTextGUI(TrustedBlocksGUI trustedBlocksGUI, FullNodeBlock fullNodeblock)
+    public synchronized ArrayList<Transaction> GetWaitingTransactions()
+    {
+        return waitingTransSinceLastTrustedBlock;
+    }
+
+    private synchronized void SetTransactionsTextGUI(TrustedBlocksGUI trustedBlocksGUI, FullNodeBlock fullNodeblock)
     {
 
         for (int i = 0; i < fullNodeblock.block.dataTree.transactions.size(); i++)
@@ -209,25 +216,18 @@ public class FullNode
         //trustedBlocksGUI.setTransactionLabel(transactionsText);
     }
 
-    private void TrustABlock(FullNodeBlock fullNodeblock)
+    private synchronized void TrustABlock(FullNodeBlock fullNodeblock)
     {
         lastTrustedBlock = fullNodeblock;
         fullNodeblock.block.isTrusted = true;
 
+        //creating the trusted block UI
         TrustABlockGUI(fullNodeblock);
-
-        //we basically do all the transactions on this block ledger
-        //so everyone gets his money and poffcoin, and the miner gets the rewards and fee aswell
-        //so here, you just check for the transaction YOU are involved in, the dont give a shit about the others.!!!
-
-        //we have to think about it tho, how we prevent someone from trying to spend more poffcoin than they have
-
-        //ByteArrayInputStream bos = new ByteArrayInputStream(block.GetData());
-        //DataInputStream dos = new DataInputStream(bos);
 
         //miner gets reward
         Network.getInstance().networkUsers.get(fullNodeblock.luckyMinerPublicKey).IncreaseWallet(Network.getInstance().GetMinerReward());
 
+        //make the transactions actually appear
         for(int i = 0; i < fullNodeblock.block.dataTree.transactions.size(); i++)
         {
             Transaction transaction = fullNodeblock.block.dataTree.transactions.get(i);
@@ -251,9 +251,10 @@ public class FullNode
             //miner gets the fee
             Network.getInstance().networkUsers.get(fullNodeblock.luckyMinerPublicKey).IncreaseWallet(transaction.fee);
         }
+        System.out.println("waiting transactions size after trusting: " + waitingTransSinceLastTrustedBlock.size());
     }
 
-    public ArrayList<FullNodeBlock> GetLongestChain() throws IndexOutOfBoundsException
+    public synchronized ArrayList<FullNodeBlock> GetLongestChain() throws IndexOutOfBoundsException
     {
         try
         {
@@ -275,7 +276,7 @@ public class FullNode
         }
     }
 
-    public int GetLongestChainSize()
+    public synchronized int GetLongestChainSize()
     {
         try
         {

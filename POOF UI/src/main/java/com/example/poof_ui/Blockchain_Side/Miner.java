@@ -15,7 +15,7 @@ public class Miner extends User
     private double miningPower;
     private Random rand;
     int numberOfTransactions = 0;
-    private ArrayList<Transaction> waitingTrans = new ArrayList<>();
+    private ArrayList<Transaction> myWaitingTrans = new ArrayList<>();
 
     //mining
     private Block myblock;
@@ -59,22 +59,11 @@ public class Miner extends User
         //we might not want the last trusted block here ?
         //or maybe he will take the last trusted block, create his own blocks, but instead of mining,
         //he just compares to the untrusted blocks and if he gets to the same conclusion then on one of the chains, then he follows up on that chain
-        myblock = new Block(null, Network.getInstance().fullNode.GetLastTrustedBlockHash());
-        previousTrustedHash = Network.getInstance().fullNode.GetLastTrustedBlockHash();
+
         //myblock.AddData(Cryptography.ConvertFromTransactionToByte(new TransactionMatch(TransactionType.REWARD, null, publicKeyString, Network.getInstance().GetMinerReward())));
         //myblock.AddData(new Transaction(TransactionType.REWARD, null, publicKeyString, Network.getInstance().GetMinerReward()));
 
-        ArrayList<Transaction> waitingFullNodeTrans = Network.getInstance().fullNode.waitingTransSinceLastTrustedBlock;
-        //adding the waiting transactions from the full node to the ledger
-        for(int i = waitingFullNodeTrans.size()-1; i >= 0; i--)
-        {
-            if(numberOfTransactions < Network.getInstance().GetMaxLedgerCount())
-            {
-                ProcessLedger(waitingFullNodeTrans.get(i));
-            }
-            else
-                break;
-        }
+        CheckNodesAfterTrustedOnes();
 
         minerGUI = new MinerGUI();
 
@@ -82,56 +71,56 @@ public class Miner extends User
         PoofController.getInstance().AddMinerGUI(minerGUI, powerFormatter.format(miningPower));
     }
 
+    private void CheckNodesAfterTrustedOnes()
+    {
+        ArrayList<Transaction> waitingFullNodeTrans = Network.getInstance().fullNode.GetWaitingTransactions();
 
-    public static Miner getMiner() {
-        // Create separate categories of miners
-
-        /*
-        List<Miner> minerCategories = Arrays.asList(
-        new Miner(100,MinerType.HUGE_CORP, 100),
-        new Miner(50, MinerType.SMALL_CORP, 100),
-        new Miner(30, MinerType.GROUP, 100),
-        new Miner(2, MinerType.THESE_GUYS, 100),
-        new Miner(1,MinerType.THAT_ONE_GUY, 100)
-        );
+        //if there is only zero or one block, it is trusted, so we just continue mining to that block
+        if(Network.getInstance().fullNode.GetLongestChainSize() <= 0)
+        {
+            previousTrustedHash = Network.getInstance().fullNode.GetLastTrustedBlockHash();
+            myblock = new Block(null, previousTrustedHash);
+            return;
+        }
 
 
-        // Create the chances of getting picked
-        Map<String, List<Integer>> dictionary = Map.of(
-        "BigCompany", List.of(0,6),
-        "SmallCompany", List.of(6,16),
-        "BigGroup", List.of(16,31),
-        "SmallGroup", List.of(31,61),
-        "Individual", List.of(61,101)
-        );
+        //getting the untrusted transactions from the untrusted block
+        ArrayList<Transaction> untrustedTransactionsInUntrustedBlock = Network.getInstance().fullNode.GetLongestChain().get(Network.getInstance().fullNode.GetLongestChainSize()-1).block.dataTree.transactions;
 
-        Random randomNumber  = new Random();
-        int myRandomNumber  = randomNumber.nextInt(0,101);
-        String myKey = "";
+        System.out.println("I joined as a miner: " + name + " I have untrustedblocktransactionsInUnTrustedBlock: " + untrustedTransactionsInUntrustedBlock.size());
+        //checking if the untrusted transactions match up with the current waiting ones
+        for (int i = untrustedTransactionsInUntrustedBlock.size() - 1; i >= 0; i--)
+        {
+            //if we found a transaction that looks like its out of place
+            if(!waitingFullNodeTrans.contains(untrustedTransactionsInUntrustedBlock.get(i)))
+            {
+                //we start mining from the last trusted block
+                previousTrustedHash = Network.getInstance().fullNode.GetLastTrustedBlockHash();
+                myblock = new Block(null, previousTrustedHash);
+                System.out.println("I: " + name + "decided that something is fishyy ");
 
-        for (Map.Entry<String, List<Integer>> entry : dictionary.entrySet()) {
-            String key = entry.getKey();
-            List<Integer> value = entry.getValue();
-
-            if (myRandomNumber > value.get(0) && myRandomNumber < value.get(1)) {
-                myKey = key; // Set myKey to the corresponding key value
+                return;
             }
         }
 
-        if (myKey.equals("BigCompany")) {
-            return minerCategories.get(0);
-        } else if (myKey.equals("SmallCompany")) {
-            return minerCategories.get(1);
-        } else if (myKey.equals("BigGroup")) {
-            return minerCategories.get(2);
-        } else if (myKey.equals("SmallGroup")) {
-            return minerCategories.get(3);
-        } else if (myKey.equals("Individual")) {
-            return minerCategories.get(4);
+        System.out.println(" but ME: " + name + "will decide that everything is working correctly ");
+
+        //we start mining from the untrusted block, cause even if it's untrusted by the fullNode,
+        //we believe it's going to be trusted because every transaction seems valid
+        previousTrustedHash = Network.getInstance().fullNode.GetLongestChain().get(Network.getInstance().fullNode.GetLongestChainSize()-1).block.hash;
+        myblock = new Block(null, previousTrustedHash);
+
+        //in our block, we will include all the transactions that are not included in the untrusted block
+        ArrayList<Transaction> untrustedTransactionsNotIncludedInUntrustedBlock = new ArrayList<>(waitingFullNodeTrans);
+        untrustedTransactionsNotIncludedInUntrustedBlock.removeAll(untrustedTransactionsInUntrustedBlock);
+
+        for(int i = 0 ; i < untrustedTransactionsNotIncludedInUntrustedBlock.size(); i++)
+        {
+            ProcessLedger(untrustedTransactionsNotIncludedInUntrustedBlock.get(i));
         }
-        return null;
-        */
-        return null;
+
+        System.out.println(" ME: " + name + " added  " + untrustedTransactionsNotIncludedInUntrustedBlock.size() + " transactions on my ledger! ");
+
     }
 
     public void run()
@@ -143,19 +132,22 @@ public class Miner extends User
                 try
                 {
                     while(isSuspended)
-                        wait();
+                        wait(10);
 
+                    //decrementing the number that keeps track when was the last exchange this miner did
                     if(cycleUntilPossibleNextExchange > 0)
                         cycleUntilPossibleNextExchange--;
+                    else
+                        DecideToSell();
 
                     TryToMine();
-                    DecideToSell();
                     //DecideToSell();
                     //System.out.println("check");
                     //Thread.sleep((1/miningPower) * 1000);
                     //Thread.currentThread().wait((long)0.25);
 
 
+                    //for the green rectangle UI
                     //if your color already turned green once
                     if(startDate != null)
                     {
@@ -167,6 +159,7 @@ public class Miner extends User
                         }
                     }
 
+                    //make the thread sleep based on it's mining power
                     Thread.sleep((long)sleepTime);
 
                 } catch (Exception e) {
@@ -255,13 +248,15 @@ public class Miner extends User
         myblock = new Block(null, previousTrustedHash);
         //myblock.AddData(new Transaction(TransactionType.REWARD, null, publicKeyString, Network.getInstance().GetMinerReward()));
 
+        numberOfTransactions = 0;
+
         //adding the waiting transactions to the ledger
-        for(int i = waitingTrans.size()-1; i >= 0; i--)
+        for(int i = myWaitingTrans.size()-1; i >= 0; i--)
         {
             if(numberOfTransactions < Network.getInstance().GetMaxLedgerCount())
             {
-                ProcessLedger(waitingTrans.get(i));
-                waitingTrans.remove(i);
+                ProcessLedger(myWaitingTrans.get(i));
+                myWaitingTrans.remove(i);
             }
             else
                 break;
@@ -304,15 +299,21 @@ public class Miner extends User
         //we do this check simply by comparing the merkle root of the new block that was mined and the block I am trying to mine
         //System.out.println("I am Mr_" + indexInUsersList + " somebody else mined a new block! ");
 
+        if(myblock.dataTree.transactions.size() != newBlock.dataTree.transactions.size())
+        {
+
+        }
+
+
         //check if the new block mined by someone else is trusted by you or not
         if(!newBlock.GetMerkleRoot().equals(myblock.GetMerkleRoot()))
         {
-            //System.out.println("I am " +name + " I DON'T trust the new block! " + myblock.GetMerkleRoot() + " vs " + newBlock.GetMerkleRoot());
+            System.out.println("I am " +name + " I DON'T trust the new block! " + myblock.GetMerkleRoot() + " vs " + newBlock.GetMerkleRoot() + " because num of trans: " + myblock.dataTree.transactions.size() + " vs " + newBlock.dataTree.transactions.size());
             //either the miner of the new block is trying to cheat or this miner is trying to cheat
             //so you keep mining your block
             return;
         }
-        //System.out.println("I am " + name + " I trust the new block! ");
+        System.out.println("I am " + name + " I trust the new block! " + myblock.GetMerkleRoot());
 
         //this miner trusts the block that was mined by someone else because it contains the same transactions
         ITrustANewBlock(newBlock.hash);
@@ -336,7 +337,7 @@ public class Miner extends User
         }
         else
         {
-            waitingTrans.add(signedTransaction);
+            myWaitingTrans.add(signedTransaction);
         }
     }
 
@@ -432,9 +433,12 @@ public class Miner extends User
         //double feePercent = random.nextDouble(5)+2;
         double feePercent = random.nextDouble(0.05)+0.02; //feePercent is a random between 2 and 7
 
-        double amountToSell = hypotheticalPoofWallet * Math.max((exchange.percent+(exchange.difference/10)), 1);
 
-        System.out.println("I AM A MINER AND I REQUESTED TO SELL: " + amountToSell);
+        exchange.difference *= -1;
+
+        double amountToSell = hypotheticalPoofWallet * Math.min((exchange.percent+(exchange.difference/10)), 1);
+
+        System.out.println("I AM miner " + name +" my wallet is: " + hypotheticalPoofWallet + "AND I REQUESTED TO SELL: " + amountToSell + " cause diff: " + exchange.difference + " and percent: " + exchange.percent);
         //calculate the actual amount based on difference and exchangePercent
         RequestToSell(amountToSell * (1-feePercent), amountToSell * feePercent);
 
