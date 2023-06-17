@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 
 public class MinerGUI extends AnchorPane {
 
@@ -34,6 +36,8 @@ public class MinerGUI extends AnchorPane {
 
     @FXML
     private Label CoinLabel;
+    @FXML
+    private Rectangle outline;
 
     public void setProfilePicture(Image image)
     {
@@ -57,5 +61,9 @@ public class MinerGUI extends AnchorPane {
 
     public void SetWalletColor(String color){
         CoinLabel.setStyle(color);
+    }
+
+    public void SetWalletOutline(String outlineColor) {
+        outline.setFill(Paint.valueOf(outlineColor));
     }
 }
