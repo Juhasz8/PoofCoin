@@ -114,6 +114,7 @@ public class SimulationManager implements Runnable
             RequestLink newHead = new RequestLink();
             requestLinkHead.next = newHead;
             requestLinkHead = newHead;
+
         }
         else
         {
@@ -125,6 +126,9 @@ public class SimulationManager implements Runnable
             requestLinkHead.next = newHead;
             newHead.previous = requestLinkHead;
             requestLinkHead = newHead;
+
+            //PoofController.getInstance().SetBuyingRequestLabelGUI(currentListLength, requestLinkHead.cycleBuyingRequestAmount);
+            //PoofController.getInstance().SetSellingRequestLabelGUI(currentListLength, requestLinkHead.cycleSellingRequestAmount);
 
             //we increment the length
             currentListLength++;
@@ -151,9 +155,9 @@ public class SimulationManager implements Runnable
     private SimulationManager()
     {
         //make the very first miner join the network
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 1; i++)
         {
-            Miner miner1 = new Miner(MinerType.THESE_GUYS, GetMinerSleepingTime(MinerType.THESE_GUYS), GetRandomNameGenerator());
+            Miner miner1 = new Miner(MinerType.GROUP, GetMinerSleepingTime(MinerType.GROUP), GetRandomNameGenerator());
             miner1.start();
         }
     }

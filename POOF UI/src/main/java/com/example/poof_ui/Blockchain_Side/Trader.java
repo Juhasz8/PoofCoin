@@ -54,7 +54,7 @@ public class Trader extends User
     private void DecideWhetherToBuyOrSell()
     {
         //there is a 10% chance that the trader won't sell or buy anything
-        if(cycleUntilPossibleNextExchange > 0 || random.nextInt(10) == 0)
+        if(cycleUntilPossibleNextExchange > 0 || amountOfPendingRequests == 3 || random.nextInt(10) == 0)
             return;
 
         Exchange exchange = new Exchange();
@@ -68,7 +68,7 @@ public class Trader extends User
 
         if(type == TraderType.RISK_APPETITE) // high risk high reward guy
         {
-            System.out.println("i am a risk appetitte guy trying to decide what to do ");
+            //System.out.println("i am a risk appetitte guy trying to decide what to do ");
             //sells fewer times
             exchange.difference = random.nextInt(175)-75; //random difference between -75 and 100
 
@@ -163,17 +163,29 @@ public class Trader extends User
 
     private void MakeTheTradeRequest(Exchange exchange)
     {
-        //double feePercent = random.nextDouble(5)+2;
-        double feePercent = random.nextDouble(0.05)+0.02; //feePercent is a random between 2 and 7
-
-        //calculate the actual amount based on difference and exchangePercent
-
         if(exchange.difference > 0)
-            RequestToBuy(exchange.difference);
+        {
+            amountOfPendingRequests++;
+
+            double amountToBuy = 5;
+            RequestToBuy(amountToBuy);
+
+            //increment the cycle request amount
+            //we do this here because the miner class uses the same RequestToSell method in the User and overriding would be tricky
+            SimulationManager.getInstance().requestLinkHead.cycleBuyingRequestAmount++;
+        }
         else if (hypotheticalPoofWallet > 0)
         {
+            amountOfPendingRequests++;
+
+            exchange.difference *= -1;
+            double feePercent = random.nextDouble(0.05)+0.02; //feePercent is a random between 2 and 7
+            //calculate the actual amount based on difference and exchangePercent
+            double amountToSell = hypotheticalPoofWallet * Math.min((exchange.percent+(exchange.difference/10)), 1);
+
             RequestToSell(exchange.difference * (1 - feePercent), exchange.difference * feePercent);
 
+            hypotheticalPoofWallet -= amountToSell;
 
             //increment the cycle request amount
             //we do this here because the miner class uses the same RequestToSell method in the User and overriding would be tricky

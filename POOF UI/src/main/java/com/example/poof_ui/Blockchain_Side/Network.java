@@ -71,6 +71,9 @@ public class Network
             User seller = sellingRequests.get(0).user;
             Trader trader = buyingRequests.get(0).trader;
 
+            if(seller == trader)
+                return;
+
             Transaction transaction = GetMatch(seller, trader);
 
             //byte[] originalMessage = Cryptography.Convert(match);

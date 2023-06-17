@@ -21,7 +21,6 @@ public abstract class User extends Thread
     //the amount of Puff you own
     protected double poofWallet = 0;
     protected double hypotheticalPoofWallet = 0;
-    protected double euroWallet = 0;
 
     protected boolean isSuspended = false;
 
@@ -33,6 +32,8 @@ public abstract class User extends Thread
     protected DecimalFormat powerFormatter = new DecimalFormat("PWR: 0");
 
     protected int cycleUntilPossibleNextExchange;
+
+    protected int amountOfPendingRequests = 0;
 
     public User(String name)
     {
@@ -78,8 +79,10 @@ public abstract class User extends Thread
         else
             System.out.println(name + ": My wallet got decreased (" + amount +")");
         */
+        System.out.println("MY: " +name + " poof and hypo: " + poofWallet + " , " +hypotheticalPoofWallet );
         poofWallet += amount;
-        hypotheticalPoofWallet += amount;
+        if(amount > 0)
+            hypotheticalPoofWallet += amount;
     }
 
     public double GetWallet()

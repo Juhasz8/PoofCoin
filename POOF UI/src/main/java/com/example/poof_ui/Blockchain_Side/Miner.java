@@ -183,15 +183,13 @@ public class Miner extends User
         {
             //New Block mined successfully!!
             System.out.println("--------------------");
-            System.out.println("I mined a block successfully!! " + name + "_" + indexInUsersList);
+            System.out.println("I mined a block successfully!! " + name + "_" + publicKeyString);
             myblock.BlockMined(hash);
 
             //we have to notify everyone on the network that we are the lottery winners
             Network.getInstance().NewBlockWasMined(myblock, publicKeyString);
 
             ITrustANewBlock(hash);
-
-
         }
         else
         {
@@ -297,13 +295,6 @@ public class Miner extends User
     {
         //the previous hash will be updated according to the relation between my current block I am working on and this new block that was mined by someone else
         //we do this check simply by comparing the merkle root of the new block that was mined and the block I am trying to mine
-        //System.out.println("I am Mr_" + indexInUsersList + " somebody else mined a new block! ");
-
-        if(myblock.dataTree.transactions.size() != newBlock.dataTree.transactions.size())
-        {
-
-        }
-
 
         //check if the new block mined by someone else is trusted by you or not
         if(!newBlock.GetMerkleRoot().equals(myblock.GetMerkleRoot()))
@@ -346,7 +337,7 @@ public class Miner extends User
         //if it's not the first transaction, there is a 10% chance that the miner wont sell anything
         //if he recently sold he is on a break
         //if he has no poof-s he won't even think about selling
-        if(cycleUntilPossibleNextExchange > 0 || hypotheticalPoofWallet == 0 || random.nextInt(10) == 0)
+        if(cycleUntilPossibleNextExchange > 0 || hypotheticalPoofWallet == 0 || amountOfPendingRequests == 3 || random.nextInt(10) == 0)
             return;
 
         Exchange exchange = new Exchange();
@@ -433,7 +424,6 @@ public class Miner extends User
         //double feePercent = random.nextDouble(5)+2;
         double feePercent = random.nextDouble(0.05)+0.02; //feePercent is a random between 2 and 7
 
-
         exchange.difference *= -1;
 
         double amountToSell = hypotheticalPoofWallet * Math.min((exchange.percent+(exchange.difference/10)), 1);
@@ -443,6 +433,8 @@ public class Miner extends User
         RequestToSell(amountToSell * (1-feePercent), amountToSell * feePercent);
 
         hypotheticalPoofWallet -= amountToSell;
+        System.out.println(name+ " my hypo wallet is now at : " + hypotheticalPoofWallet + " bc the request was made: " + amountToSell * (1-feePercent) + " " + amountToSell * feePercent);
+
         //this miner won't sell for the next 1-3 turns (2-6 sec)
         cycleUntilPossibleNextExchange = random.nextInt(3)+1;
 

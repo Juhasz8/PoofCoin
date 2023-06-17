@@ -41,12 +41,14 @@ public class FullNode
 
     public synchronized void NotifyNodeThatNewBlockWasMined(FullNodeBlock newFullNodeBlock)
     {
+        /*
         System.out.println("--------------------------");
         System.out.println("I JOINED THE SYNCRONISED METHOD: " + Network.getInstance().networkUsers.get(newFullNodeBlock.luckyMinerPublicKey).name);
         System.out.println("with merkle root: " + newFullNodeBlock.block.dataTree.merkleRoot);
         System.out.println("and with hash: " + newFullNodeBlock.block.hash);
         System.out.println("and with previous hash: " + newFullNodeBlock.block.previousHash);
         System.out.println("--------------------------");
+        */
 
         //in the case of the very first blockchain that was mined and added, we just add it and trust it immediately (cause its data is empty anyways)
         if(blockChains.size() == 0)
@@ -70,20 +72,18 @@ public class FullNode
             //if the new blocks previous hash matches up with any of the previous hashes of the longest chain
             if(newFullNodeBlock.block.previousHash.equals(longestChain.get(i).block.previousHash))
             {
-                System.out.println("THE NEW BLOCKK PREVIOUS HASH MATCHES WITH THAT OF INDEX: " + i + "CAUSE PREVI HASH: " + newFullNodeBlock.block.previousHash);
-                if(i == longestChain.size()-1)
-                    System.out.println("(THE LAST BLOCK)");
+                //System.out.println("THE NEW BLOCKK PREVIOUS HASH MATCHES WITH THAT OF INDEX: " + i + "CAUSE PREVI HASH: " + newFullNodeBlock.block.previousHash);
 
                 // if the new block has the same data as the one that was just mined
                 // -> the second guy didn't get notified yet so he mined the same block and tried to add it
                 if(newFullNodeBlock.block.GetMerkleRoot().equals(longestChain.get(i).block.GetMerkleRoot()))
                 {
-                    System.out.println("The poor second guy was just after the first one, so unlucky! Better luck next time!");
+                    //System.out.println("The poor second guy was just after the first one, so unlucky! Better luck next time!");
                     return;
                 }
                 else
                 {
-                    System.out.println("they down have the same merkle root!: " + newFullNodeBlock.block.GetMerkleRoot() + " | " + longestChain.get(i).block.GetMerkleRoot());
+                    //System.out.println("they down have the same merkle root!: " + newFullNodeBlock.block.GetMerkleRoot() + " | " + longestChain.get(i).block.GetMerkleRoot());
                 }
                 //Conflict at block number I!!
 
@@ -99,8 +99,8 @@ public class FullNode
                 System.out.println("BLOCKCHAIN CONFLICT HAPPENED! Somebody is trying to be sneaky!");
                 conflictHappened = true;
             }
-            else if(i == longestChain.size()-1)
-                System.out.println("NO CONFLICT OR UNLUCKY GUY");
+            //else if(i == longestChain.size()-1)
+                //System.out.println("NO CONFLICT OR UNLUCKY GUY");
         }
 
         Network.getInstance().NotifyMinersAboutNewBlockMined(newFullNodeBlock);
@@ -111,7 +111,7 @@ public class FullNode
             //and add the new block to the currect blockchain
             for (int i = 0; i < blockChains.size(); i++)
             {
-                System.out.println("checking if " + blockChains.get(i).get(blockChains.get(i).size()-1).block.hash+ " equals " + newFullNodeBlock.block.previousHash);
+                //System.out.println("checking if " + blockChains.get(i).get(blockChains.get(i).size()-1).block.hash+ " equals " + newFullNodeBlock.block.previousHash);
                 //checking if the i'th blockchain contains the hash which the new block has as a previoushash
                 if(blockChains.get(i).get(blockChains.get(i).size()-1).block.hash.equals(newFullNodeBlock.block.previousHash))
                 {
@@ -201,7 +201,7 @@ public class FullNode
 
     private synchronized void SetTransactionsTextGUI(TrustedBlocksGUI trustedBlocksGUI, FullNodeBlock fullNodeblock)
     {
-
+        PoofController.getInstance().AddTrustedBlockTransactionGUI(trustedBlocksGUI, "TEEEEST");
         for (int i = 0; i < fullNodeblock.block.dataTree.transactions.size(); i++)
         {
             String transactionsText = "";
@@ -227,7 +227,7 @@ public class FullNode
         //miner gets reward
         Network.getInstance().networkUsers.get(fullNodeblock.luckyMinerPublicKey).IncreaseWallet(Network.getInstance().GetMinerReward());
 
-        //make the transactions actually appear
+        //make the transactions actually go through and appear in the users' wallets
         for(int i = 0; i < fullNodeblock.block.dataTree.transactions.size(); i++)
         {
             Transaction transaction = fullNodeblock.block.dataTree.transactions.get(i);
@@ -242,16 +242,18 @@ public class FullNode
                 User fromUser = Network.getInstance().networkUsers.get(transaction.fromPublicKey);
                 //from the user the actual amount is getting deducted
                 fromUser.IncreaseWallet(-transaction.amount);
+                fromUser.amountOfPendingRequests--;
             }
 
             //the buyer gets the expected amount
             User toUser = Network.getInstance().networkUsers.get(transaction.toPublicKey);
             toUser.IncreaseWallet(transaction.amount);
+            toUser.amountOfPendingRequests--;
 
             //miner gets the fee
             Network.getInstance().networkUsers.get(fullNodeblock.luckyMinerPublicKey).IncreaseWallet(transaction.fee);
         }
-        System.out.println("waiting transactions size after trusting: " + waitingTransSinceLastTrustedBlock.size());
+        //System.out.println("waiting transactions size after trusting: " + waitingTransSinceLastTrustedBlock.size());
     }
 
     public synchronized ArrayList<FullNodeBlock> GetLongestChain() throws IndexOutOfBoundsException

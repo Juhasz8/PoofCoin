@@ -1,5 +1,6 @@
 package com.example.poof_ui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -55,5 +56,8 @@ public class TrustedBlocksGUI extends AnchorPane {
     public void setTransactionLabel(String transactionLabelString){
         Transactions newTransaction = new Transactions(transactionLabelString);
         transactionPane.getChildren().add(newTransaction);
+
+        //I tried this:   (also not working)
+        //Platform.runLater(()-> transactionPane.getChildren().add(newTransaction));
     }
 }

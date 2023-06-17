@@ -62,7 +62,7 @@
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                            <font>
-                              <Font name="Arial" size="13.0" />
+                              <Font name="Arial" size="8.0" />
                            </font>
                         </Label>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="383.0" style="-fx-background-color: #42454a;" text="Merkle Root:" textFill="WHITE">
