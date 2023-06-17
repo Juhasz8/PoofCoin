@@ -68,6 +68,7 @@ public class Trader extends User
 
         if(type == TraderType.RISK_APPETITE) // high risk high reward guy
         {
+            System.out.println("i am a risk appetitte guy trying to decide what to do ");
             //sells fewer times
             exchange.difference = random.nextInt(175)-75; //random difference between -75 and 100
 

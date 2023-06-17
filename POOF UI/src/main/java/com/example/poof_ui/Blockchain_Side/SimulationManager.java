@@ -149,7 +149,7 @@ public class SimulationManager implements Runnable
         //Miner miner1 = new Miner(10, 11, MinerType.THAT_ONE_GUY, GetMinerSleepingTime(MinerType.THAT_ONE_GUY));
         //miner1.start();
 
-        Miner miner2 = new Miner(MinerType.THAT_ONE_GUY, GetMinerSleepingTime(MinerType.THAT_ONE_GUY), GetRandomNameGenerator());
+        Miner miner2 = new Miner(MinerType.GROUP, GetMinerSleepingTime(MinerType.GROUP), GetRandomNameGenerator());
         miner2.start();
 
     }

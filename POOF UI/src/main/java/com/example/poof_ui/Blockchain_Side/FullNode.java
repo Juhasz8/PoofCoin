@@ -186,6 +186,8 @@ public class FullNode
 
         SetTransactionsTextGUI(trustedBlocksGUI, fullNodeBlock);
 
+        PoofController.getInstance().AddTrustedBlockGUI(trustedBlocksGUI);
+
         //making the Trusted Block GUI visible
         //PoofController.getInstance().AddTrustedBlockGUI(trustedBlocksGUI);
     }
@@ -202,7 +204,7 @@ public class FullNode
             transactionsText += decFormatter.format(trans.amount);
             transactionsText += " --> ";
             transactionsText += Network.getInstance().networkUsers.get(trans.toPublicKey).name;
-            PoofController.getInstance().AddTrustedBlockGUI(trustedBlocksGUI, transactionsText);
+            PoofController.getInstance().AddTrustedBlockTransactionGUI(trustedBlocksGUI, transactionsText);
         }
         //trustedBlocksGUI.setTransactionLabel(transactionsText);
     }

@@ -306,12 +306,12 @@ public class Miner extends User
         //check if the new block mined by someone else is trusted by you or not
         if(!newBlock.GetMerkleRoot().equals(myblock.GetMerkleRoot()))
         {
-            System.out.println("I am " +name + " I DON'T trust the new block! " + myblock.GetMerkleRoot() + " vs " + newBlock.GetMerkleRoot());
+            //System.out.println("I am " +name + " I DON'T trust the new block! " + myblock.GetMerkleRoot() + " vs " + newBlock.GetMerkleRoot());
             //either the miner of the new block is trying to cheat or this miner is trying to cheat
             //so you keep mining your block
             return;
         }
-        System.out.println("I am " + name + " I trust the new block! ");
+        //System.out.println("I am " + name + " I trust the new block! ");
 
         //this miner trusts the block that was mined by someone else because it contains the same transactions
         ITrustANewBlock(newBlock.hash);
