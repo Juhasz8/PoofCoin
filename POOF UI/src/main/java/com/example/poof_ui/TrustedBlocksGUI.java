@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 public class TrustedBlocksGUI extends AnchorPane {
 
@@ -33,7 +34,7 @@ public class TrustedBlocksGUI extends AnchorPane {
     @FXML
     private Label previousHash;
     @FXML
-    private AnchorPane transactionPane;
+    private VBox transactionBox;
 
     public void setBlockNumber(String blockNumberString)
     {
@@ -55,8 +56,7 @@ public class TrustedBlocksGUI extends AnchorPane {
 
     public void setTransactionLabel(String transactionLabelString){
         Transactions newTransaction = new Transactions(transactionLabelString);
-        transactionPane.getChildren().add(newTransaction);
-
+        transactionBox.getChildren().add(newTransaction);
         //I tried this:   (also not working)
         //Platform.runLater(()-> transactionPane.getChildren().add(newTransaction));
     }

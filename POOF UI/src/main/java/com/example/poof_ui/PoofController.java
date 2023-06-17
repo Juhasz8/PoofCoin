@@ -239,28 +239,28 @@ public class PoofController implements Initializable {
     public void SetBuyingRequestLabelGUI(int index, int value)
     {
         if(index == 0)
-            br1.setText(Integer.toString(value));
+            Platform.runLater(() -> br1.setText(Integer.toString(value)));
         else if(index == 1)
-            br2.setText(Integer.toString(value));
+            Platform.runLater(() -> br2.setText(Integer.toString(value)));
         else if(index == 2)
-            br3.setText(Integer.toString(value));
+            Platform.runLater(() -> br3.setText(Integer.toString(value)));
         else if(index == 3)
-            br4.setText(Integer.toString(value));
+            Platform.runLater(() -> br4.setText(Integer.toString(value)));
         else if(index == 4)
-            br5.setText(Integer.toString(value));
+            Platform.runLater(() -> br5.setText(Integer.toString(value)));
     }
     public void SetSellingRequestLabelGUI(int index, int value)
     {
         if(index == 0)
-            sr1.setText(Integer.toString(value));
+            Platform.runLater(() -> sr1.setText(Integer.toString(value)));
         else if(index == 1)
-            sr2.setText(Integer.toString(value));
+            Platform.runLater(() -> sr2.setText(Integer.toString(value)));
         else if(index == 2)
-            sr3.setText(Integer.toString(value));
+            Platform.runLater(() -> sr3.setText(Integer.toString(value)));
         else if(index == 3)
-            sr4.setText(Integer.toString(value));
+            Platform.runLater(() -> sr4.setText(Integer.toString(value)));
         else if(index == 4)
-            sr5.setText(Integer.toString(value));
+            Platform.runLater(() -> sr5.setText(Integer.toString(value)));
     }
 
 

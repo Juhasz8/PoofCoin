@@ -41,7 +41,6 @@ public class Transactions extends AnchorPane {
     public void initialize() {
         // Set the text of the currentEventName label to the eventName
         transactionLabel.setWrapText(true);
-        transactionLabel.setPrefWidth(250);
         transactionLabel.setText(transactionS);
     }
 }
