@@ -110,71 +110,101 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2">
                <children>
-                  <Label text="Buying Requests:" textFill="WHITE">
+                  <Label text="B. Requests:" textFill="WHITE">
                      <font>
-                        <Font name="Arial Bold" size="13.0" />
+                        <Font name="Arial Bold" size="10.0" />
                      </font>
                   </Label>
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="168.0" spacing="5.0">
+                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="104.0" spacing="3.0">
                      <children>
                         <Label fx:id="br1" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
                         <Label fx:id="br2" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
                         <Label fx:id="br3" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
                         <Label fx:id="br4" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
                         <Label fx:id="br5" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
                      </children>
                   </HBox>
-                  <Label text="Sell Requests:" textFill="WHITE">
+                  <Label text="S. Requests:" textFill="WHITE">
                      <font>
-                        <Font name="Arial Bold" size="13.0" />
+                        <Font name="Arial Bold" size="10.0" />
                      </font>
                   </Label>
-                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="168.0" spacing="5.0">
+                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="102.0" spacing="3.0">
                      <children>
                         <Label fx:id="sr1" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
                         <Label fx:id="s2" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
                         <Label fx:id="s3" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
                         <Label fx:id="s4" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
                         <Label fx:id="s5" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
-                              <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
                      </children>
                   </HBox>

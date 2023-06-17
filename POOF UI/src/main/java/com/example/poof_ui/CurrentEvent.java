@@ -12,15 +12,17 @@ public class CurrentEvent extends AnchorPane {
 
     private float minPriceChange;
     private float maxPriceChange;
+    private int eventInfluencePercentage;
 
     // Constructor to create a CurrentEvent object
-    public CurrentEvent(String eventName, int probability, int coolDown, float minPriceChange, float maxPriceChange)
+    public CurrentEvent(String eventName, int probability, int coolDown, float minPriceChange, float maxPriceChange, int eventInfluencePercentage)
     {
         this.eventName = eventName; // The name of the Current Event
         this.probability = probability; // The probability of this event happening
         this.coolDown = coolDown; // The cool down before this event can happen again
         this.minPriceChange = minPriceChange;
         this.maxPriceChange = maxPriceChange;
+        this.eventInfluencePercentage = eventInfluencePercentage;
 
         CreateEventUI();
     }

@@ -442,8 +442,6 @@ public class Miner extends User
         //this miner won't sell for the next 1-3 turns (2-6 sec)
         cycleUntilPossibleNextExchange = random.nextInt(3)+1;
 
-        startDate = new Date();
-        PoofController.getInstance().SetMinerOutline(minerGUI, redColor);
     }
 
 
