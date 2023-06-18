@@ -201,7 +201,6 @@ public class FullNode
 
     private synchronized void SetTransactionsTextGUI(TrustedBlocksGUI trustedBlocksGUI, FullNodeBlock fullNodeblock)
     {
-        PoofController.getInstance().AddTrustedBlockTransactionGUI(trustedBlocksGUI, "TEEEEST");
         for (int i = 0; i < fullNodeblock.block.dataTree.transactions.size(); i++)
         {
             String transactionsText = "";
