@@ -83,16 +83,26 @@ public class SimulationManager implements Runnable
     {
         int sum = 0;
         RequestLink current = requestLinkTail;
-        int currentIndex = 0;
         while(current.next != null)
         {
-            PoofController.getInstance().SetBuyingRequestLabelGUI(currentIndex, current.cycleBuyingRequestAmount);
-            currentIndex++;
-            
             sum += current.cycleBuyingRequestAmount;
             current = current.next;
         }
         return sum;
+    }
+
+    private void PrintRequestsUI()
+    {
+        RequestLink current = requestLinkTail;
+        int currentIndex = 0;
+        while(current.next != null)
+        {
+            PoofController.getInstance().SetBuyingRequestLabelGUI(currentIndex, current.cycleBuyingRequestAmount);
+            PoofController.getInstance().SetSellingRequestLabelGUI(currentIndex, current.cycleSellingRequestAmount);
+
+            currentIndex++;
+            current = current.next;
+        }
     }
 
     public int GetBuyingRequestAmountDifference()
@@ -140,7 +150,7 @@ public class SimulationManager implements Runnable
             currentListLength++;
         }
 
-        GetBuyingRequestAmount();
+        PrintRequestsUI();
     }
     //----------------
 
