@@ -35,7 +35,9 @@ public class Miner extends User
     //just for debugging until we have actual names for miners
     private int indexInUsersList;
     private String redColor = "-fx-background-color: #ff5e57;";
-    private String red = "#ff5e57";
+    private String redOutline = "#ff5e57";
+    private String greyOutline = "#8d8d8d";
+    private String greenOutline = "#4FCB59";
     private String greenColor = "-fx-background-color: #4FCB59;";
     private String greyColor = "-fx-background-color: #8D8D8D;";
 
@@ -155,7 +157,7 @@ public class Miner extends User
                         float numSeconds = ((endDate.getTime() - startDate.getTime()) / 1000);
 
                         if (numSeconds >= 2) {
-                            PoofController.getInstance().SetMinerColor(minerGUI, greyColor);
+                            PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), greyColor);
                         }
                     }
 
@@ -450,6 +452,7 @@ public class Miner extends User
 
         if (amount < 0){
             PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), redColor);
+
         } else  {
             PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), greenColor);
         }

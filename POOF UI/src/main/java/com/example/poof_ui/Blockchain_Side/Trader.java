@@ -3,6 +3,7 @@ package com.example.poof_ui.Blockchain_Side;
 import com.example.poof_ui.PoofController;
 import com.example.poof_ui.TraderGUI;
 
+import java.util.Date;
 import java.util.Random;
 
 enum TraderType { RISK_APPETITE, TREND_FOLLOWER, CONTRARIAN_APPROACH, EVENT_FOLLOWER, PSYCHOPATH }
@@ -14,6 +15,13 @@ public class Trader extends User
 
     private TraderGUI traderGUI;
 
+    private String redColor = "-fx-background-color: #ff5e57;";
+    private String redOutline = "#ff5e57";
+    private String greyOutline = "#8d8d8d";
+    private String greenOutline = "#4FCB59";
+    private String greenColor = "-fx-background-color: #4FCB59;";
+    private String greyColor = "-fx-background-color: #8D8D8D;";
+
     public Trader(TraderType type, String name)
     {
         super(name);
@@ -21,7 +29,7 @@ public class Trader extends User
         Network.getInstance().JoinTraderToTheNetwork(this);
 
         traderGUI = new TraderGUI();
-        PoofController.getInstance().SetTraderGUICoin(traderGUI, decFormatter.format(0));
+        PoofController.getInstance().SetTraderGUICoin(traderGUI, decFormatter.format(0), greyColor);
         PoofController.getInstance().AddTraderGUI(traderGUI);
     }
 
@@ -40,6 +48,16 @@ public class Trader extends User
                         cycleUntilPossibleNextExchange--;
 
                     DecideWhetherToBuyOrSell();
+
+                    if(startDate != null)
+                    {
+                        Date endDate = new Date();
+                        float numSeconds = ((endDate.getTime() - startDate.getTime()) / 1000);
+
+                        if (numSeconds >= 2) {
+                            PoofController.getInstance().SetTraderGUICoin(traderGUI, decFormatter.format(poofWallet), greyColor);
+                        }
+                    }
 
                     Thread.sleep(2000);
 
@@ -219,11 +237,17 @@ public class Trader extends User
         }
     }
 
+    Date startDate;
     @Override
     public void IncreaseWallet(double amount)
     {
+        startDate = new Date();
         super.IncreaseWallet(amount);
-        PoofController.getInstance().SetTraderGUICoin(traderGUI, decFormatter.format(poofWallet));
+        if (amount < 0){
+            PoofController.getInstance().SetTraderGUICoin(traderGUI,decFormatter.format(poofWallet), redColor);
+        } else  {
+            PoofController.getInstance().SetTraderGUICoin(traderGUI,decFormatter.format(poofWallet), greenColor);
+        }
     }
 
 }

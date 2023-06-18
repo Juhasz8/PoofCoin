@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Rectangle?>
@@ -10,7 +9,6 @@
 <AnchorPane prefHeight="180.0" prefWidth="140.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Circle layoutX="70.0" layoutY="82.0" nodeOrientation="LEFT_TO_RIGHT" radius="40.0" stroke="#8d8d8d" strokeType="INSIDE" strokeWidth="5.0" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="42.0" />
-      <ImageView fx:id="minerPp" fitHeight="80.0" fitWidth="80.0" layoutX="30.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="58.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="42.0" />
       <Rectangle fx:id="outline" arcHeight="5.0" arcWidth="5.0" fill="#8d8d8d" height="25.0" layoutX="22.5" layoutY="37.5" stroke="TRANSPARENT" strokeType="INSIDE" width="95.0" />
       <Label fx:id="hashLabel" alignment="TOP_CENTER" layoutX="25.0" layoutY="129.0" prefHeight="51.0" prefWidth="90.0" text="---" textAlignment="CENTER" textFill="WHITE" wrapText="true">
          <font>
