@@ -1,11 +1,12 @@
 package com.example.poof_ui.Blockchain_Side;
 
+import com.example.poof_ui.CurrentEvent;
 import com.example.poof_ui.CurrentEventManager;
 import com.example.poof_ui.PoofController;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class SimulationManager implements Runnable
@@ -14,9 +15,7 @@ public class SimulationManager implements Runnable
     //creates the User objects and the threads
     private Miner miner;
 
-    public CurrentEventManager eventManager;
-
-    public float marketPrice = 0;
+    public double marketPrice = 0;
 
     private Random random = new Random();
 
@@ -35,7 +34,19 @@ public class SimulationManager implements Runnable
     //the requests that happened in the 5th last update cycle
     public RequestLink requestLinkTail;
 
-    public float previousMarketPrice;
+    public double previousMarketPrice;
+
+    private CurrentEventManager eventManager;
+
+    private CurrentEvent eventInThisCycle = null;
+
+    //for rounding numbers up to 2 decimal
+    protected DecimalFormat decFormatter = new DecimalFormat("0.00");
+
+    public CurrentEvent GetEventThisCycle()
+    {
+        return eventInThisCycle;
+    }
 
     private RequestUIThread requestUIThread;
 
@@ -183,13 +194,15 @@ public class SimulationManager implements Runnable
 
     private SimulationManager()
     {
+        eventManager = new CurrentEventManager();
+
         requestUIThread = new RequestUIThread();
         requestUIThread.start();
 
         //make the very first miner join the network
         for (int i = 0; i < 1; i++)
         {
-            Miner miner1 = new Miner(MinerType.GROUP, GetMinerSleepingTime(MinerType.GROUP), GetRandomNameGenerator());
+            Miner miner1 = new Miner(MinerType.THAT_ONE_GUY, GetMinerSleepingTime(MinerType.THAT_ONE_GUY), GetRandomNameGenerator());
             miner1.start();
         }
     }
@@ -205,7 +218,11 @@ public class SimulationManager implements Runnable
                     while (isSuspended)
                         wait(10);
 
-                    DetermineMarketPrice();
+                    eventInThisCycle = null;
+                    GenerateRandomEvent();
+
+                    if(eventInThisCycle == null)
+                        DetermineMarketPrice();
                     JoiningPeople();
                     UpdateRequestListening();
 
@@ -216,6 +233,35 @@ public class SimulationManager implements Runnable
                 }
             }
         }
+    }
+
+    private void GenerateRandomEvent()
+    {
+        //if the marketprice is not zero, there is a 12.5% chance that an event will occur
+        if(marketPrice == 0 || random.nextInt(8) != 0)
+            return;
+
+        CurrentEvent event = eventManager.GetRandomEvent();
+        double influence = event.GetEventInfluence() + (random.nextDouble(.1)-0.05);
+        marketPrice *= influence;
+        eventInThisCycle = event;
+
+        //setting UI
+        String eventInfluenceText = " ";
+        if(influence > 1)
+        {
+            eventInfluenceText += "+";
+            influence -= 1;
+        }
+        else
+        {
+            influence = 1 - influence;
+            eventInfluenceText += "-";
+        }
+        eventInfluenceText += decFormatter.format(influence*100);
+
+        PoofController.getInstance().SetEventUI(event, event.GetName() + eventInfluenceText + "%");
+        SetPriceUI();
     }
 
     private void JoiningPeople() {
@@ -251,7 +297,7 @@ public class SimulationManager implements Runnable
         }
 
         //if the marketprice went up people are more likely to join
-        float priceDifference = marketPrice - previousMarketPrice;
+        double priceDifference = marketPrice - previousMarketPrice;
         int minerAmountToJoin = 0;
         int traderAmountToJoin = 0;
 
@@ -324,7 +370,7 @@ public class SimulationManager implements Runnable
             if(Network.getInstance().GetMinerAmount() == 30)
                 break;
 
-            Miner newMiner = new Miner(MinerType.THESE_GUYS, GetMinerSleepingTime(MinerType.THESE_GUYS), GetRandomNameGenerator());
+            Miner newMiner = new Miner(MinerType.GROUP, GetMinerSleepingTime(MinerType.GROUP), GetRandomNameGenerator());
             newMiner.start();
         }
 
@@ -376,13 +422,15 @@ public class SimulationManager implements Runnable
         else
             marketPriceChange += random.nextFloat(20) - 10; //random number between -10 and 10
 
-        //check whether an event happened or not
 
-
-        //if not, then
         if(random.nextInt(5) == 0) //there is a 20% chance that the value be just random between these two and not increasing or decreasing
         {
+
+            if(marketPrice > 0)
+                marketPriceChange = CapMarketPriceChange(marketPriceChange);
+
             marketPrice += marketPriceChange;
+
             if(marketPrice < 0)
                 marketPrice = 0;
             SetPriceUI();
@@ -390,32 +438,9 @@ public class SimulationManager implements Runnable
         }
         // GetBuyingRequestAmountDifference and GetSellingRequestAmountDifference return a pos number if more requests were made this cycle.
 
-        //when there are more buying requests, t
-        //marketPrice += GetBuyingRequestAmountDifference() * random.nextFloat();
-
-        //marketPrice -= GetSellingRequestAmountDifference() * random.nextFloat();
-
         int buyerSellerDifference = requestLinkHead.cycleBuyingRequestAmount - requestLinkHead.cycleSellingRequestAmount;
         int totalRequests = requestLinkHead.cycleBuyingRequestAmount + requestLinkHead.cycleSellingRequestAmount;
 
-        /*
-        System.out.println("...................");
-        System.out.println("selling requests last cycle: " + requestLinkHead.cycleSellingRequestAmount);
-        System.out.println("buying requests last cycle: " + requestLinkHead.cycleBuyingRequestAmount);
-        System.out.println("buyerSellerDifference: " + buyerSellerDifference);
-        System.out.println("...................");
-        */
-
-
-
-        /*
-        //if more people are trying to buy than sell the market price decreases
-        if(requestLinkHead.cycleBuyingRequestAmount > requestLinkHead.cycleSellingRequestAmount)
-            marketPrice += (buyerSellerDifference) * (1+marketPrice/100) * (random.nextFloat(0.75f)+0.75);
-        //otherwise increases
-        else
-            marketPrice += (buyerSellerDifference) * (1+marketPrice/100) * (random.nextFloat(0.75f)+0.75);
-        */
         if(buyerSellerDifference < -5 && (requestLinkHead.cycleBuyingRequestAmount/totalRequests) * 100 < 20)
             marketPriceChange += (buyerSellerDifference) * (1+marketPrice/100) * (random.nextFloat(0.75f)+0.75);
         else if (buyerSellerDifference != 0)
@@ -425,14 +450,9 @@ public class SimulationManager implements Runnable
 
 
         if(marketPrice > 0)
-        {
-            //can only change max 15%
-            if (marketPriceChange > marketPrice * 0.15)
-                marketPriceChange = marketPrice * 0.15;
-            else if (marketPriceChange < -marketPrice * 0.15)
-                marketPriceChange = -marketPrice * 0.15;
-        }
+            marketPriceChange = CapMarketPriceChange(marketPriceChange);
 
+        //System.out.println("prevous market price: " + previousMarketPrice + " price change: " + marketPriceChange);
         marketPrice += marketPriceChange;
 
         if(marketPrice < 0)
@@ -441,8 +461,21 @@ public class SimulationManager implements Runnable
         SetPriceUI();
     }
 
+    private double CapMarketPriceChange(double marketPriceChange)
+    {
+        //can only change max 15%
+        if (marketPriceChange > marketPrice * 0.15)
+            marketPriceChange = marketPrice * (random.nextDouble(0.05)+0.15);
+        else if (marketPriceChange < -marketPrice * 0.15)
+            marketPriceChange = -marketPrice * (random.nextDouble(0.05)+0.15);
+
+        return marketPriceChange;
+    }
+
     private void SetPriceUI()
     {
+        //System.out.println("previous market price: " + previousMarketPrice + " new market price: " + marketPrice);
+
         // Update Market Price Label
         PoofController.getInstance().updateMarketPriceLabel(String.valueOf(marketPrice));
         // Update Price Graph
@@ -481,13 +514,9 @@ public class SimulationManager implements Runnable
     {
         if(minerType == MinerType.THAT_ONE_GUY)
             return random.nextDouble(150)+50;  //mining power range -> 5-20
-        else if(minerType == MinerType.THESE_GUYS)
-            return random.nextDouble(25)+25;  //mining power range -> 20-40
         else if(minerType == MinerType.GROUP)
             return random.nextDouble(8.35)+16.65;  //mining power range -> 40-60
-        else if(minerType == MinerType.SMALL_CORP)
-            return random.nextDouble(4.15)+12.5;  //mining power range -> 60-80
-        else if(minerType == MinerType.HUGE_CORP)
+        else if(minerType == MinerType.COMPANY)
             return random.nextDouble(7.5)+5;   //mining power range -> 80-200
 
         //just for safety

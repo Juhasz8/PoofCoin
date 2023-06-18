@@ -2,18 +2,21 @@ package com.example.poof_ui.Blockchain_Side;
 
 import com.example.poof_ui.MinerGUI;
 import com.example.poof_ui.PoofController;
-import com.example.poof_ui.TraderGUI;
 
 import java.util.*;
 import java.security.Signature;
 
-
-
-enum MinerType { THAT_ONE_GUY, THESE_GUYS, GROUP, SMALL_CORP, HUGE_CORP }
+enum MinerType { THAT_ONE_GUY, GROUP, COMPANY }
 
 public class Miner extends User
 {
     private double miningPower;
+
+    public double GetMiningPower()
+    {
+        return miningPower;
+    }
+
     private Random rand;
     int numberOfTransactions = 0;
     private ArrayList<Transaction> myWaitingTrans = new ArrayList<>();
@@ -52,8 +55,6 @@ public class Miner extends User
         //miningPower = 10;
         this.miningPower = ((1/sleepTime) * 1000);
 
-        System.out.println("POWER: " + miningPower);
-
         this.sleepTime = sleepTime;
         indexInUsersList = Network.getInstance().networkUsers.size();
         //Update();
@@ -71,7 +72,7 @@ public class Miner extends User
         minerGUI = new MinerGUI();
 
         PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(0), greyColor);
-        PoofController.getInstance().AddMinerGUI(minerGUI, powerFormatter.format(miningPower));
+        PoofController.getInstance().AddMinerGUI(minerGUI, powerFormatter.format(miningPower), String.valueOf(type));
     }
 
     private void CheckNodesAfterTrustedOnes()
@@ -90,7 +91,7 @@ public class Miner extends User
         //getting the untrusted transactions from the untrusted block
         ArrayList<Transaction> untrustedTransactionsInUntrustedBlock = Network.getInstance().fullNode.GetLongestChain().get(Network.getInstance().fullNode.GetLongestChainSize()-1).block.dataTree.transactions;
 
-        System.out.println("I joined as a miner: " + name + " I have untrustedblocktransactionsInUnTrustedBlock: " + untrustedTransactionsInUntrustedBlock.size());
+
         //checking if the untrusted transactions match up with the current waiting ones
         for (int i = untrustedTransactionsInUntrustedBlock.size() - 1; i >= 0; i--)
         {
@@ -100,13 +101,10 @@ public class Miner extends User
                 //we start mining from the last trusted block
                 previousTrustedHash = Network.getInstance().fullNode.GetLastTrustedBlockHash();
                 myblock = new Block(null, previousTrustedHash);
-                System.out.println("I: " + name + "decided that something is fishyy ");
 
                 return;
             }
         }
-
-        System.out.println(" but ME: " + name + "will decide that everything is working correctly ");
 
         //we start mining from the untrusted block, cause even if it's untrusted by the fullNode,
         //we believe it's going to be trusted because every transaction seems valid
@@ -121,8 +119,6 @@ public class Miner extends User
         {
             ProcessLedger(untrustedTransactionsNotIncludedInUntrustedBlock.get(i));
         }
-
-        System.out.println(" ME: " + name + " added  " + untrustedTransactionsNotIncludedInUntrustedBlock.size() + " transactions on my ledger! ");
 
     }
 
@@ -334,22 +330,12 @@ public class Miner extends User
             exchange.difference = random.nextInt(110)-100;
 
         }
-        else if (type == MinerType.THESE_GUYS)
-        {
-            //random difference between -75 and 10
-            exchange.difference = random.nextInt(85)-75;
-        }
         else if (type == MinerType.GROUP)
         {
             //random difference between -50 and 10
             exchange.difference = random.nextInt(60)-50;
         }
-        else if (type == MinerType.SMALL_CORP)
-        {
-            //random difference between -35 and 10
-            exchange.difference = random.nextInt(45)-35;
-        }
-        else if (type == MinerType.HUGE_CORP)
+        else if (type == MinerType.COMPANY)
         {
             //random difference between -25 and 10
             exchange.difference = random.nextInt(35)-25;
@@ -414,12 +400,12 @@ public class Miner extends User
 
         double amountToSell = hypotheticalPoofWallet * Math.min((exchange.percent+(exchange.difference/10)), 1);
 
-        System.out.println("I AM miner " + name +" my wallet is: " + hypotheticalPoofWallet + "AND I REQUESTED TO SELL: " + amountToSell + " cause diff: " + exchange.difference + " and percent: " + exchange.percent);
+        //System.out.println("I AM miner " + name +" my wallet is: " + hypotheticalPoofWallet + "AND I REQUESTED TO SELL: " + amountToSell + " cause diff: " + exchange.difference + " and percent: " + exchange.percent);
         //calculate the actual amount based on difference and exchangePercent
         RequestToSell(amountToSell * (1-feePercent), amountToSell * feePercent);
 
         hypotheticalPoofWallet -= amountToSell;
-        System.out.println(name+ " my hypo wallet is now at : " + hypotheticalPoofWallet + " bc the request was made: " + amountToSell * (1-feePercent) + " " + amountToSell * feePercent);
+        //System.out.println(name+ " my hypo wallet is now at : " + hypotheticalPoofWallet + " bc the request was made: " + amountToSell * (1-feePercent) + " " + amountToSell * feePercent);
 
         //this miner won't sell for the next 1-3 turns (2-6 sec)
         cycleUntilPossibleNextExchange = random.nextInt(3)+1;

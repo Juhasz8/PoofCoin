@@ -104,7 +104,6 @@ public class PoofController implements Initializable {
     Random random = new Random();
 
     public static PoofController instance;
-    public CurrentEventManager eventManager = new CurrentEventManager();
 
     public int eventIndex = 0;
     @Override
@@ -135,6 +134,7 @@ public class PoofController implements Initializable {
             label_Months.setText(String.valueOf(monthsPassed));
             label_Weeks.setText(String.valueOf(weeksPassed));
 
+            /*
             if(eventIndex == 1)
             {
                 PotentiallyMakeEvent();
@@ -142,6 +142,7 @@ public class PoofController implements Initializable {
             }
             else
                 eventIndex++;
+             */
 
         }));
 
@@ -150,11 +151,9 @@ public class PoofController implements Initializable {
 
     }
 
-    public void PotentiallyMakeEvent()
+    public void SetEventUI(CurrentEvent currentEvent, String eventText)
     {
-        CurrentEvent event = eventManager.getEvent();
-        if(event != null)
-            currentEvents.getChildren().add(0, new CurrentEvent(event.GetName()));
+        Platform.runLater(() -> currentEvents.getChildren().add(0, new CurrentEvent(eventText)));
     }
 
     private Thread simulationThread;
@@ -200,13 +199,16 @@ public class PoofController implements Initializable {
 
 
     // MINER GUI
-    public void AddMinerGUI(MinerGUI minerGUI, String powerString)
+    public void AddMinerGUI(MinerGUI minerGUI, String powerString, String icon)
     {
         // Add miners
         Platform.runLater(() -> minersTile.getChildren().add(minerGUI));
 
         // Add miners
         Platform.runLater(() -> minerGUI.SetMiningPowerLabel(powerString));
+
+        //setting the icon
+        Platform.runLater(() -> minerGUI.SetIcon("ProfileImages/"+icon+".png"));
     }
 
     public void SetMinerGUIHash(MinerGUI minerGUI, String hash)
@@ -233,7 +235,7 @@ public class PoofController implements Initializable {
     public void AddTraderGUI(TraderGUI traderGUI, String icon)
     {
         Platform.runLater(() -> tradersTile.getChildren().add(traderGUI));
-        System.out.println("THIS IS THE ICON: " + icon);
+        //System.out.println("THIS IS THE ICON: " + icon);
         Platform.runLater(() -> traderGUI.SetIcon("ProfileImages/"+icon+".png"));
     }
 
@@ -280,15 +282,16 @@ public class PoofController implements Initializable {
     }
 
 
-    public void updateMarketPriceLabel(String Price){
-        float currentPrice = Float.valueOf(Price);
+    public void updateMarketPriceLabel(String Price)
+    {
+        Double currentPrice = Double.valueOf(Price);
         DecimalFormat decimalFormat = new DecimalFormat("€#.##");
         String formattedPrice = decimalFormat.format(currentPrice);
         Platform.runLater(() -> marketPrice.setText(String.valueOf(formattedPrice)));
     }
 
     // Declare the previousPrice as a class member variable
-    private float previousPrice = 0;
+    private Double previousPrice = 0.0;
 
     // Declare colors
     private String redColor = "-fx-stroke: #ff5e57;";
@@ -297,8 +300,8 @@ public class PoofController implements Initializable {
     private String textRedColor = "-fx-text-fill: #ff5e57;";
 
     public void updateMarketPercentageLabel(String price) {
-        float currentPrice = Float.valueOf(price);
-        float percentage = ((currentPrice - previousPrice) / currentPrice);
+        Double currentPrice = Double.valueOf(price);
+        Double percentage = ((currentPrice - previousPrice) / previousPrice);
         previousPrice = currentPrice; // Update the previousPrice with the currentPrice
 
         DecimalFormat decimalFormat = new DecimalFormat("+#.##%;-#.##%");

@@ -21,7 +21,7 @@ public class Network
     private float minerReward = 10;
     public float GetMinerReward() { return minerReward; }
 
-    private int miningDifficulty = 2;
+    private int miningDifficulty = 1;
     public int GetDifficulty() { return miningDifficulty; }
 
     private int maxTransactionOnLedger = 15;
@@ -37,6 +37,9 @@ public class Network
 
     public FullNode fullNode = new FullNode();
     public Map<String, User> networkUsers = new HashMap<>();
+
+    //keeping track of the sum of all mining powers in the network
+    private int miningPowerSum = 0;
 
     public static Network getInstance()
     {
@@ -160,6 +163,23 @@ public class Network
         miners.add(miner);
         //adding the user itself in the hashmap, with the key of the users publicKey
         networkUsers.put(miner.publicKeyString, miner);
+
+        miningPowerSum += miner.GetMiningPower();
+        SetMiningDifficulty();
+    }
+
+    private void SetMiningDifficulty()
+    {
+        if(miningDifficulty == 1 && (miningPowerSum > 40 || fullNode.GetLongestChainSize() == 3))
+        {
+            miningDifficulty++;
+            System.out.println("mining difficulty increased to " + miningDifficulty + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
+        else if (miningDifficulty == 2 && miningPowerSum > 500)
+        {
+            miningDifficulty++;
+            System.out.println("mining difficulty increased to " + miningDifficulty + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        }
     }
 
     public void JoinTraderToTheNetwork(Trader trader)
@@ -176,6 +196,8 @@ public class Network
         System.out.println("is trying to enter method with root: + " + newBlock.dataTree.merkleRoot);
         //we notify the full nodes about the new block mined
         fullNode.NotifyNodeThatNewBlockWasMined(new FullNodeBlock(newBlock, luckyMinerPublicKey));
+
+        SetMiningDifficulty();
     }
 
     public synchronized void NotifyMinersAboutNewBlockMined(FullNodeBlock fullNodeBlock)

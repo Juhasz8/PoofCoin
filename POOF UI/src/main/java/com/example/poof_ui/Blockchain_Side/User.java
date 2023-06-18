@@ -81,7 +81,7 @@ public abstract class User extends Thread
         else
             System.out.println(name + ": My wallet got decreased (" + amount +")");
         */
-        System.out.println("MY: " +name + " poof and hypo: " + poofWallet + " , " +hypotheticalPoofWallet );
+        //System.out.println("MY: " +name + " poof and hypo: " + poofWallet + " , " +hypotheticalPoofWallet );
         poofWallet += amount;
         if(amount > 0)
             hypotheticalPoofWallet += amount;
@@ -140,5 +140,5 @@ public abstract class User extends Thread
         isSuspended = false;
     }
 
-    
+
 }
