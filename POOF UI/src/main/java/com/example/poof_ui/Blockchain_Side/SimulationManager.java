@@ -26,7 +26,7 @@ public class SimulationManager implements Runnable
     //These fields are for storing the last 5 cycle's buying and selling requests
     // (which happened in the last 5*2 = 10 seconds)
     //if we would need the correct order in which the amounts happened we will need a linked list
-    private int currentListLength = 1;
+    private int currentListLength = 0;
     private int maxListLength = 5;
 
     //the requests that happened in the last update cycle
@@ -83,8 +83,12 @@ public class SimulationManager implements Runnable
     {
         int sum = 0;
         RequestLink current = requestLinkTail;
+        int currentIndex = 0;
         while(current.next != null)
         {
+            PoofController.getInstance().SetBuyingRequestLabelGUI(currentIndex, current.cycleBuyingRequestAmount);
+            currentIndex++;
+            
             sum += current.cycleBuyingRequestAmount;
             current = current.next;
         }
@@ -104,6 +108,9 @@ public class SimulationManager implements Runnable
     //called in the update loop
     private void UpdateRequestListening()
     {
+        //PoofController.getInstance().SetBuyingRequestLabelGUI(currentListLength, random.nextInt(10));
+
+
         //the linked list reached its maximum capacity
         if(currentListLength == maxListLength)
         {
@@ -118,8 +125,10 @@ public class SimulationManager implements Runnable
         }
         else
         {
-            if(currentListLength == 1)
+            if(currentListLength == 0)
                 requestLinkTail = requestLinkHead;
+
+            //PoofController.getInstance().SetSellingRequestLabelGUI(currentListLength, 15);
 
             //adding new element and setting the head point there
             RequestLink newHead = new RequestLink();
@@ -127,12 +136,11 @@ public class SimulationManager implements Runnable
             newHead.previous = requestLinkHead;
             requestLinkHead = newHead;
 
-            //PoofController.getInstance().SetBuyingRequestLabelGUI(currentListLength, requestLinkHead.cycleBuyingRequestAmount);
-            //PoofController.getInstance().SetSellingRequestLabelGUI(currentListLength, requestLinkHead.cycleSellingRequestAmount);
-
             //we increment the length
             currentListLength++;
         }
+
+        GetBuyingRequestAmount();
     }
     //----------------
 
