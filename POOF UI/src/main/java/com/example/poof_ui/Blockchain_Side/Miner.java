@@ -2,6 +2,7 @@ package com.example.poof_ui.Blockchain_Side;
 
 import com.example.poof_ui.MinerGUI;
 import com.example.poof_ui.PoofController;
+import com.example.poof_ui.TraderGUI;
 
 import java.util.*;
 import java.security.Signature;
@@ -156,13 +157,20 @@ public class Miner extends User
                         Date endDate = new Date();
                         float numSeconds = ((endDate.getTime() - startDate.getTime()) / 1000);
 
-                        if (numSeconds >= 2) {
+                        if (numSeconds >= 0.1) {
                             PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), greyColor);
                         }
                     }
 
+                    Date startSleepDate = new Date();
+                    Date currentSleepDate = new Date();
+                    while(((currentSleepDate.getTime() - startDate.getTime()) / 1000) < sleepTime)
+                    {
+                        currentSleepDate = new Date();
+                    }
+
                     //make the thread sleep based on it's mining power
-                    Thread.sleep((long)sleepTime);
+                    //Thread.sleep((long)sleepTime);
 
                 } catch (Exception e) {
                     System.out.println(e);
@@ -457,4 +465,10 @@ public class Miner extends User
             PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), greenColor);
         }
     }
+
+    public MinerGUI GetTraderGUI()
+    {
+        return minerGUI;
+    }
+
 }

@@ -54,7 +54,7 @@ public class Trader extends User
                         Date endDate = new Date();
                         float numSeconds = ((endDate.getTime() - startDate.getTime()) / 1000);
 
-                        if (numSeconds >= 2) {
+                        if (numSeconds >= 0.1) {
                             PoofController.getInstance().SetTraderGUICoin(traderGUI, decFormatter.format(poofWallet), greyColor);
                         }
                     }
@@ -196,6 +196,8 @@ public class Trader extends User
                 amountToBuy = exchange.difference/10 * Math.max(SimulationManager.getInstance().marketPrice/1000, 1) * (random.nextDouble(1)+1);
 
             RequestToBuy(amountToBuy);
+            //setting the UI outline
+            //PoofController.getInstance().SetTraderOutline(traderGUI, greenColor);
 
             //increment the cycle request amount
             //we do this here because the miner class uses the same RequestToSell method in the User and overriding would be tricky
@@ -211,6 +213,8 @@ public class Trader extends User
             double amountToSell = hypotheticalPoofWallet * Math.min((exchange.percent+(exchange.difference/10)), 1);
 
             RequestToSell(exchange.difference * (1 - feePercent), exchange.difference * feePercent);
+            //setting the UI outline
+            //PoofController.getInstance().SetTraderOutline(traderGUI, redColor);
 
             hypotheticalPoofWallet -= amountToSell;
 
@@ -248,6 +252,11 @@ public class Trader extends User
         } else  {
             PoofController.getInstance().SetTraderGUICoin(traderGUI,decFormatter.format(poofWallet), greenColor);
         }
+    }
+
+    public TraderGUI GetTraderGUI()
+    {
+        return traderGUI;
     }
 
 }

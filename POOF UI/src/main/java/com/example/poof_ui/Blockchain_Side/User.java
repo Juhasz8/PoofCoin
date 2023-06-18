@@ -1,5 +1,7 @@
 package com.example.poof_ui.Blockchain_Side;
 
+import com.example.poof_ui.PoofController;
+
 import java.security.*;
 import java.util.Base64;
 
@@ -97,6 +99,7 @@ public abstract class User extends Thread
 
         //TransactionRequest request = new TransactionRequest(this, publicKeyString, TransactionType.SELL, amount, fee);
         SellingRequest request = new SellingRequest(this, amount, fee);
+
         try
         {
             Network.getInstance().ProcessSellingRequest(request);
@@ -137,4 +140,5 @@ public abstract class User extends Thread
         isSuspended = false;
     }
 
+    
 }

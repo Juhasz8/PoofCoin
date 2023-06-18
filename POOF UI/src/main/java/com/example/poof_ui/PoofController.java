@@ -219,6 +219,12 @@ public class PoofController implements Initializable {
         Platform.runLater(() -> minerGUI.SetCoinLabel(coin));
         Platform.runLater(() -> minerGUI.SetWalletColor(color));
     }
+
+    public void SetMinerGUIColor(MinerGUI minerGUI, String color)
+    {
+        Platform.runLater(() -> minerGUI.SetWalletColor(color));
+    }
+
     public void SetMinerOutline(MinerGUI minerGUI, String outlineColor){
         Platform.runLater(() -> minerGUI.SetWalletOutline(outlineColor));
     }
@@ -234,6 +240,12 @@ public class PoofController implements Initializable {
         Platform.runLater(() -> traderGUI.SetCoinLabel(coin));
         Platform.runLater(() -> traderGUI.SetWalletColor(color));
     }
+
+    public void SetTraderGUIColor(TraderGUI traderGUI, String color)
+    {
+        Platform.runLater(() -> traderGUI.SetWalletColor(color));
+    }
+
     public void SetTraderOutline(TraderGUI traderGUI, String color){
         Platform.runLater(() -> traderGUI.SetWalletOutline(color));
     }
