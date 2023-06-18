@@ -110,7 +110,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2">
                <children>
-                  <Label text="B. Requests:" textFill="WHITE">
+                  <Label text="Buy Requests:" textFill="WHITE">
                      <font>
                         <Font name="Arial Bold" size="10.0" />
                      </font>
@@ -149,7 +149,7 @@
                               <Font size="10.0" />
                            </font>
                         </Label>
-                        <Label fx:id="br5" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
+                        <Label fx:id="br5" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #3474f0; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
@@ -159,7 +159,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <Label text="S. Requests:" textFill="WHITE">
+                  <Label text="Sell Requests:" textFill="WHITE">
                      <font>
                         <Font name="Arial Bold" size="10.0" />
                      </font>
@@ -198,7 +198,7 @@
                               <Font size="10.0" />
                            </font>
                         </Label>
-                        <Label fx:id="sr5" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #8d8d8d; -fx-background-radius: 5;" text="0" textFill="WHITE">
+                        <Label fx:id="sr5" alignment="CENTER" minWidth="-Infinity" style="-fx-background-color: #3474f0; -fx-background-radius: 5;" text="0" textFill="WHITE">
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
