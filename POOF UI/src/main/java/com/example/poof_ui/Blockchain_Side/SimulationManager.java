@@ -37,6 +37,13 @@ public class SimulationManager implements Runnable
 
     public float previousMarketPrice;
 
+    private RequestUIThread requestUIThread;
+
+    public RequestUIThread GetRequestUIThread()
+    {
+        return requestUIThread;
+    }
+
     private ArrayList<String> NAMES = new ArrayList<>(Arrays.asList(
             "Alejandro", "Andrés", "Angel", "Antonio", "Armando", "Arturo", "Benjamín", "Carlos", "César", "Daniel",
             "David", "Eduardo", "Emilio", "Enrique", "Esteban", "Felipe", "Fernando", "Francisco", "Gabriel", "Germán",
@@ -176,6 +183,9 @@ public class SimulationManager implements Runnable
 
     private SimulationManager()
     {
+        requestUIThread = new RequestUIThread();
+        requestUIThread.start();
+
         //make the very first miner join the network
         for (int i = 0; i < 1; i++)
         {
@@ -323,7 +333,20 @@ public class SimulationManager implements Runnable
             if(Network.getInstance().GetTraderAmount() == 30)
                 break;
 
-            Trader newTrader = new Trader(TraderType.RISK_APPETITE, GetRandomNameGenerator());
+            TraderType type = TraderType.RISK_APPETITE;
+            int randomTypeI = random.nextInt(100);
+            if(randomTypeI < 20)
+                type = TraderType.RISK_APPETITE;
+            else if (randomTypeI < 50)
+                type = TraderType.TREND_FOLLOWER;
+            else if (randomTypeI < 60)
+                type = TraderType.CONTRARIAN_APPROACH;
+            else if(randomTypeI < 85)
+                type = TraderType.EVENT_FOLLOWER;
+            else
+                type = TraderType.PSYCHOPATH;
+
+            Trader newTrader = new Trader(type, GetRandomNameGenerator());
             newTrader.start();
         }
 
@@ -435,6 +458,8 @@ public class SimulationManager implements Runnable
         {
             user.SuspendThread();
         }
+        requestUIThread.SuspendThread();
+
         //suspend this thread
         isSuspended = true;
     }
@@ -446,6 +471,8 @@ public class SimulationManager implements Runnable
         {
             user.ResumeThread();
         }
+        requestUIThread.ResumeThread();
+
         //resume this thread
         isSuspended = false;
     }

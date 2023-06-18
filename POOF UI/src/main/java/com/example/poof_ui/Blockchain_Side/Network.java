@@ -72,8 +72,12 @@ public class Network
             Trader trader = buyingRequests.get(0).trader;
 
             if(seller == trader)
+            {
+                BuyingRequest first = buyingRequests.get(0);
+                buyingRequests.set(0, buyingRequests.get(1));
+                buyingRequests.set(1, first);
                 return;
-
+            }
             Transaction transaction = GetMatch(seller, trader);
 
             //byte[] originalMessage = Cryptography.Convert(match);

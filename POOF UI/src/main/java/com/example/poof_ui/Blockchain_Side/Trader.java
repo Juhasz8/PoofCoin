@@ -50,16 +50,6 @@ public class Trader extends User
 
                     DecideWhetherToBuyOrSell();
 
-                    if(startDate != null)
-                    {
-                        Date endDate = new Date();
-                        float numSeconds = ((endDate.getTime() - startDate.getTime()) / 1000);
-
-                        if (numSeconds >= 0.1) {
-                            PoofController.getInstance().SetTraderGUICoin(traderGUI, decFormatter.format(poofWallet), greyColor);
-                        }
-                    }
-
                     Thread.sleep(2000);
 
                 } catch (Exception e) {
@@ -250,14 +240,11 @@ public class Trader extends User
         super.IncreaseWallet(amount);
         if (amount < 0){
             PoofController.getInstance().SetTraderGUICoin(traderGUI,decFormatter.format(poofWallet), redColor);
+            SimulationManager.getInstance().GetRequestUIThread().AddTraderStartingTime(traderGUI);
         } else  {
             PoofController.getInstance().SetTraderGUICoin(traderGUI,decFormatter.format(poofWallet), greenColor);
+            SimulationManager.getInstance().GetRequestUIThread().AddTraderStartingTime(traderGUI);
         }
-    }
-
-    public TraderGUI GetTraderGUI()
-    {
-        return traderGUI;
     }
 
 }

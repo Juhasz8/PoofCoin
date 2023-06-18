@@ -144,33 +144,9 @@ public class Miner extends User
                         DecideToSell();
 
                     TryToMine();
-                    //DecideToSell();
-                    //System.out.println("check");
-                    //Thread.sleep((1/miningPower) * 1000);
-                    //Thread.currentThread().wait((long)0.25);
-
-
-                    //for the green rectangle UI
-                    //if your color already turned green once
-                    if(startDate != null)
-                    {
-                        Date endDate = new Date();
-                        float numSeconds = ((endDate.getTime() - startDate.getTime()) / 1000);
-
-                        if (numSeconds >= 0.1) {
-                            PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), greyColor);
-                        }
-                    }
-
-                    Date startSleepDate = new Date();
-                    Date currentSleepDate = new Date();
-                    while(((currentSleepDate.getTime() - startDate.getTime()) / 1000) < sleepTime)
-                    {
-                        currentSleepDate = new Date();
-                    }
 
                     //make the thread sleep based on it's mining power
-                    //Thread.sleep((long)sleepTime);
+                    Thread.sleep((long)sleepTime);
 
                 } catch (Exception e) {
                     System.out.println(e);
@@ -460,15 +436,13 @@ public class Miner extends User
 
         if (amount < 0){
             PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), redColor);
+            SimulationManager.getInstance().GetRequestUIThread().AddMinerStartingTime(minerGUI);
 
         } else  {
             PoofController.getInstance().SetMinerGUICoin(minerGUI, decFormatter.format(poofWallet), greenColor);
+            SimulationManager.getInstance().GetRequestUIThread().AddMinerStartingTime(minerGUI);
         }
     }
 
-    public MinerGUI GetTraderGUI()
-    {
-        return minerGUI;
-    }
 
 }
