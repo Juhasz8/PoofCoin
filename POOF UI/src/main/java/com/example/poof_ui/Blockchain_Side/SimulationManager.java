@@ -115,6 +115,11 @@ public class SimulationManager implements Runnable
         return requestLinkHead.cycleSellingRequestAmount - requestLinkHead.previous.cycleSellingRequestAmount;
     }
 
+    public int GetRequestDifference()
+    {
+        return requestLinkHead.cycleBuyingRequestAmount - requestLinkHead.cycleSellingRequestAmount;
+    }
+
     //called in the update loop
     private void UpdateRequestListening()
     {
@@ -152,7 +157,6 @@ public class SimulationManager implements Runnable
 
         PrintRequestsUI();
     }
-    //----------------
 
 
     public String GetRandomNameGenerator()

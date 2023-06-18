@@ -68,27 +68,28 @@ public class Trader extends User
 
         if(type == TraderType.RISK_APPETITE) // high risk high reward guy
         {
-            //System.out.println("i am a risk appetitte guy trying to decide what to do ");
-            //sells fewer times
-            exchange.difference = random.nextInt(175)-75; //random difference between -75 and 100
+            //sells fewer times, and more likely to buy if the price is low or the amount of people buying is very low
+            exchange.difference = random.nextDouble(175)-75; //random difference between -75 and 100
 
             //whatever he decides to do, he will deal with a lot of his current money or poof
-            exchange.percent = random.nextDouble(.4)+0.35; //will deal with 35-75% of his current currency
-
-            //buys if the price is very low, or the amount of people buying is very few
+            exchange.percent = random.nextDouble(.4)+0.5; //will deal with 50-90% of his current currency
 
         }
         else if (type == TraderType.TREND_FOLLOWER)  //makes decisions based on what the majority is doing
         {
-            //sells if a lot of people sell
-
-            //buys if a lot of people buy
+            //sells if a lot of people sell and buys if a lot of people buy
+            int requestDifference = SimulationManager.getInstance().GetRequestDifference();
+            exchange.difference = requestDifference * (random.nextDouble(requestDifference/10)+1) * (random.nextDouble(14)+1);
+            exchange.percent = random.nextDouble(0.4)+0.35; //will deal with 35-75% of his current currency
         }
         else if (type == TraderType.CONTRARIAN_APPROACH)  //makes decisions based on what the minority is doing
         {
-            //sells if a lot of people buy
-
-            //buys if a lot of people sell
+            //more likely to sell if a lot of people buy
+            //more likely to buy if a lot of people sell
+            //he knows he is going against the current, so he is dealing with a bit less poof than the trend follower
+            int requestDifference = SimulationManager.getInstance().GetRequestDifference();
+            exchange.difference = -requestDifference * (random.nextDouble(requestDifference/10)+1) * (random.nextDouble(10)+1);
+            exchange.percent = random.nextDouble(0.4)+0.25; //will deal with 25-65% of his current currency
         }
         else if (type == TraderType.EVENT_FOLLOWER)  //makes decisions based on the events
         {
@@ -102,7 +103,7 @@ public class Trader extends User
             //completely random behaviour
 
             //random difference between -100 and 100
-            exchange.difference = random.nextInt(200)-100;
+            exchange.difference = random.nextDouble(200)-100;
             //will deal with 5-95% of his current currency
             exchange.percent = random.nextDouble(.9)+0.05;
         }
@@ -118,7 +119,9 @@ public class Trader extends User
 
             if(type == TraderType.PSYCHOPATH)
             {
-                //MakeTheTradeRequest(difference, exchangePercent);
+                //the influence of everything has to be big enough for the trader to make a request
+                if(Math.abs(exchange.difference) >= 25)
+                    MakeTheTradeRequest(exchange);
                 return;
             }
         }
@@ -129,7 +132,7 @@ public class Trader extends User
             //completely random behaviour
 
             //random difference between -100 and 100
-            exchange.difference = random.nextInt(200)-100;
+            exchange.difference = random.nextDouble(200)-100;
             //will deal with 5-95% of his current currency
             exchange.percent = random.nextDouble(.9)+0.05;
         }
@@ -150,12 +153,13 @@ public class Trader extends User
             //they buy between 60% and 100%
             exchange.percent = random.nextDouble(0.4)+0.6;
         }
+        /*
         else if(Network.getInstance().GetMinerAmount() < 5)
         {
             //they buy between 40% and 100%
-            exchange.percent = random.nextDouble(0.4)+0.6;
+            exchange.percent = random.nextDouble(0.6)+0.4;
         }
-
+        */
 
         //change the difference and the percentage values slightly, based on events, buying and selling trends, and people leaving or joining
 
@@ -167,7 +171,12 @@ public class Trader extends User
         {
             amountOfPendingRequests++;
 
-            double amountToBuy = 5;
+            double amountToBuy;
+            if(random.nextInt(5) == 0)
+                amountToBuy = random.nextDouble(10);
+            else
+                amountToBuy = exchange.difference/10 * Math.max(SimulationManager.getInstance().marketPrice/1000, 1) * (random.nextDouble(1)+1);
+
             RequestToBuy(amountToBuy);
 
             //increment the cycle request amount

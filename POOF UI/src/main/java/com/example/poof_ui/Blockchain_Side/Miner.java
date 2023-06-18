@@ -394,7 +394,7 @@ public class Miner extends User
 
 
         //the influence of everything has to be big enough for the miner to sell
-        if(exchange.difference <= -25)
+        if(exchange.difference < 0)
             MakeTheSellRequest(exchange);
     }
 

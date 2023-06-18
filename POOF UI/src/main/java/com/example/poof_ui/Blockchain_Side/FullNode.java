@@ -150,7 +150,7 @@ public class FullNode
             }
         }
 
-        DebugPrintingOfBlockchains();
+        //DebugPrintingOfBlockchains();
     }
 
 
