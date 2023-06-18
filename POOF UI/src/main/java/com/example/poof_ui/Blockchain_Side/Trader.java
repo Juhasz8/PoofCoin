@@ -1,5 +1,6 @@
 package com.example.poof_ui.Blockchain_Side;
 
+import com.example.poof_ui.MinerGUI;
 import com.example.poof_ui.PoofController;
 import com.example.poof_ui.TraderGUI;
 
@@ -30,7 +31,7 @@ public class Trader extends User
 
         traderGUI = new TraderGUI();
         PoofController.getInstance().SetTraderGUICoin(traderGUI, decFormatter.format(0), greyColor);
-        PoofController.getInstance().AddTraderGUI(traderGUI);
+        PoofController.getInstance().AddTraderGUI(traderGUI, String.valueOf(type));
     }
 
     public void run()

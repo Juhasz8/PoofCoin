@@ -224,9 +224,11 @@ public class PoofController implements Initializable {
     }
 
     // TRADER GUI
-    public void AddTraderGUI(TraderGUI traderGUI)
+    public void AddTraderGUI(TraderGUI traderGUI, String icon)
     {
         Platform.runLater(() -> tradersTile.getChildren().add(traderGUI));
+        System.out.println("THIS IS THE ICON: " + icon);
+        Platform.runLater(() -> traderGUI.SetIcon("ProfileImages/"+icon+".png"));
     }
 
     public void SetTraderGUICoin(TraderGUI traderGUI, String coin, String color)

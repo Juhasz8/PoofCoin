@@ -31,6 +31,8 @@ public class TraderGUI extends AnchorPane {
     private Label CoinLabel;
     @FXML
     private Rectangle outline;
+    @FXML
+    private ImageView icon;
 
     public void SetCoinLabel(String coin)
     {
@@ -42,5 +44,9 @@ public class TraderGUI extends AnchorPane {
     }
     public void SetWalletOutline(String outlineColor){
         outline.setFill(Paint.valueOf(outlineColor));
+    }
+    public void SetIcon(String traderIcon){
+        Image icon = new Image(getClass().getResourceAsStream(traderIcon));
+        this.icon.setImage(icon);
     }
 }
