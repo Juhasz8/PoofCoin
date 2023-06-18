@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="80.0" minWidth="80.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefWidth="141.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Circle radius="40.0" stroke="#8d8d8d" strokeType="INSIDE" strokeWidth="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <ImageView fx:id="traderPp" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <Label fx:id="CoinLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="14.0" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #8d8d8d;" text="POOF: 0000" textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.topAnchor="0.0">
+      <Circle layoutX="53.0" layoutY="41.0" radius="40.0" stroke="#8d8d8d" strokeType="INSIDE" strokeWidth="5.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="50.0" />
+      <Rectangle fx:id="outline" arcHeight="5.0" arcWidth="5.0" fill="#8d8d8d" height="25.0" stroke="TRANSPARENT" strokeType="INSIDE" width="95.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="43.0" />
+      <Label fx:id="CoinLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="40.0" prefHeight="20.0" prefWidth="80.0" style="-fx-background-color: #8d8d8d;" text="POOF: 0000" textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="45.0">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font></Label>

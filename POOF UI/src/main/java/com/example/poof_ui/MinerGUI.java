@@ -39,11 +39,6 @@ public class MinerGUI extends AnchorPane {
     @FXML
     private Rectangle outline;
 
-    public void setProfilePicture(Image image)
-    {
-        minerPp.setImage(image);
-    }
-
     public void SetMiningPowerLabel(String powerString)
     {
         miningPowerLabel.setText(powerString);
@@ -64,6 +59,6 @@ public class MinerGUI extends AnchorPane {
     }
 
     public void SetWalletOutline(String outlineColor) {
-        //outline.setFill(Paint.valueOf(outlineColor));
+        outline.setFill(Paint.valueOf(outlineColor));
     }
 }

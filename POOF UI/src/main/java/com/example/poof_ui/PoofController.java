@@ -198,6 +198,8 @@ public class PoofController implements Initializable {
         Platform.runLater(()-> trustedBlocksGUI.setTransactionLabel(transaction));
     }
 
+
+    // MINER GUI
     public void AddMinerGUI(MinerGUI minerGUI, String powerString)
     {
         // Add miners
@@ -217,23 +219,23 @@ public class PoofController implements Initializable {
         Platform.runLater(() -> minerGUI.SetCoinLabel(coin));
         Platform.runLater(() -> minerGUI.SetWalletColor(color));
     }
-
-    public void SetMinerColor(MinerGUI minerGUI, String color){
-        Platform.runLater(() -> minerGUI.SetWalletColor(color));
-    }
-
     public void SetMinerOutline(MinerGUI minerGUI, String outlineColor){
         Platform.runLater(() -> minerGUI.SetWalletOutline(outlineColor));
     }
 
+    // TRADER GUI
     public void AddTraderGUI(TraderGUI traderGUI)
     {
         Platform.runLater(() -> tradersTile.getChildren().add(traderGUI));
     }
 
-    public void SetTraderGUICoin(TraderGUI traderGUI, String coin)
+    public void SetTraderGUICoin(TraderGUI traderGUI, String coin, String color)
     {
         Platform.runLater(() -> traderGUI.SetCoinLabel(coin));
+        Platform.runLater(() -> traderGUI.SetWalletColor(color));
+    }
+    public void SetTraderOutline(TraderGUI traderGUI, String color){
+        Platform.runLater(() -> traderGUI.SetWalletOutline(color));
     }
 
     public void SetBuyingRequestLabelGUI(int index, int value)

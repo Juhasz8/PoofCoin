@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 
 public class TraderGUI extends AnchorPane {
 
@@ -27,13 +29,18 @@ public class TraderGUI extends AnchorPane {
 
     @FXML
     private Label CoinLabel;
-
-    public void setProfilePicture(Image image) {
-        traderPp.setImage(image);
-    }
+    @FXML
+    private Rectangle outline;
 
     public void SetCoinLabel(String coin)
     {
         CoinLabel.setText(coin);
+    }
+
+    public void SetWalletColor(String color){
+        CoinLabel.setStyle(color);
+    }
+    public void SetWalletOutline(String outlineColor){
+        outline.setFill(Paint.valueOf(outlineColor));
     }
 }

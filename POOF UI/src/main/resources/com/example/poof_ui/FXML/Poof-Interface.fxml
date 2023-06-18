@@ -431,7 +431,7 @@
           </Tab>
             <Tab fx:id="graphView1" text="Blockchain View">
                <content>
-                  <ScrollPane fx:id="BlockchainViewScroll" fitToHeight="true" pannable="true" vbarPolicy="NEVER">
+                  <ScrollPane fx:id="BlockchainViewScroll" fitToHeight="true" pannable="true">
                      <content>
                         <TilePane fx:id="BlockchainViewTile" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefColumns="11" prefRows="1" prefTileHeight="500.0" prefTileWidth="300.0" style="-fx-background-color: #1e1f22;" tileAlignment="CENTER_LEFT" vgap="20.0" />
                      </content>
