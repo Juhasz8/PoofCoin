@@ -38,6 +38,8 @@ public class MinerGUI extends AnchorPane {
     private Label CoinLabel;
     @FXML
     private Rectangle outline;
+    @FXML
+    private ImageView icon;
 
     public void SetMiningPowerLabel(String powerString)
     {
@@ -60,5 +62,9 @@ public class MinerGUI extends AnchorPane {
 
     public void SetWalletOutline(String outlineColor) {
         outline.setFill(Paint.valueOf(outlineColor));
+    }
+    public void SetIcon(String minerIcon){
+        Image icon = new Image(getClass().getResourceAsStream(minerIcon));
+        this.icon.setImage(icon);
     }
 }
