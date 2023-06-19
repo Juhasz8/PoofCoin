@@ -87,6 +87,9 @@ public class PoofController implements Initializable {
     @FXML
     private Label sr5;
 
+    @FXML
+    private Label hashDifficultyLabel;
+
     // Chart data
     private XYChart.Series series1;
     private List<Double> lastTwoValues = new ArrayList<>();
@@ -227,10 +230,6 @@ public class PoofController implements Initializable {
         Platform.runLater(() -> minerGUI.SetWalletColor(color));
     }
 
-    public void SetMinerOutline(MinerGUI minerGUI, String outlineColor){
-        Platform.runLater(() -> minerGUI.SetWalletOutline(outlineColor));
-    }
-
     // TRADER GUI
     public void AddTraderGUI(TraderGUI traderGUI, String icon)
     {
@@ -250,9 +249,11 @@ public class PoofController implements Initializable {
         Platform.runLater(() -> traderGUI.SetWalletColor(color));
     }
 
-    public void SetTraderOutline(TraderGUI traderGUI, String color){
-        Platform.runLater(() -> traderGUI.SetWalletOutline(color));
+    public void SetHashDifficulty(String hashDifficulty){
+        Platform.runLater(() -> hashDifficultyLabel.setText(hashDifficulty));
     }
+
+
 
     public void SetBuyingRequestLabelGUI(int index, int value)
     {
