@@ -1,5 +1,6 @@
 package com.example.poof_ui.Blockchain_Side;
 
+import com.example.poof_ui.CurrentEvent;
 import com.example.poof_ui.MinerGUI;
 import com.example.poof_ui.PoofController;
 import com.example.poof_ui.TraderGUI;
@@ -102,12 +103,18 @@ public class Trader extends User
         }
         else if (type == TraderType.EVENT_FOLLOWER)  //makes decisions based on the events
         {
-            //sell and buys based on the positive or negative impact of an event
-            double influence = SimulationManager.getInstance().GetEventThisCycle().GetEventInfluence();
-            if(influence > 1)
-                exchange.difference = influence * 100;
+            CurrentEvent event = SimulationManager.getInstance().GetEventThisCycle();
+            if(event != null) {
+                //sell and buys based on the positive or negative impact of an event
+                double influence = event.GetEventInfluence();
+                if (influence > 1)
+                    exchange.difference = influence * 100;
+                else
+                    exchange.difference = -influence * 100;
+            }
             else
-                exchange.difference = -influence * 100;
+                exchange.difference = random.nextDouble(175)-75; //random difference between -75 and 100
+
             exchange.percent = random.nextDouble(0.4)+0.3; //will deal with 30-70% of his current currency
 
         }
