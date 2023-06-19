@@ -1,5 +1,7 @@
 package com.example.poof_ui.Blockchain_Side;
 
+import com.example.poof_ui.PoofController;
+
 import java.util.*;
 
 
@@ -173,10 +175,12 @@ public class Network
         if(miningDifficulty == 1 && (miningPowerSum > 40 || fullNode.GetLongestChainSize() == 3))
         {
             miningDifficulty++;
+            PoofController.getInstance().SetHashDifficulty(Integer.toString(miningDifficulty));
         }
         else if (miningDifficulty == 2 && miningPowerSum > 500)
         {
             miningDifficulty++;
+            PoofController.getInstance().SetHashDifficulty(Integer.toString(miningDifficulty));
         }
     }
 

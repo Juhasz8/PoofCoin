@@ -99,7 +99,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="hashDifficultyLabel" style="-fx-background-color: #42454a; -fx-background-radius: 5;" text="0" textFill="WHITE">
+                  <Label fx:id="hashDifficultyLabel" style="-fx-background-color: #42454a; -fx-background-radius: 5;" text="1" textFill="WHITE">
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
