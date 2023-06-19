@@ -103,8 +103,12 @@ public class Trader extends User
         else if (type == TraderType.EVENT_FOLLOWER)  //makes decisions based on the events
         {
             //sell and buys based on the positive or negative impact of an event
-
-
+            double influence = SimulationManager.getInstance().GetEventThisCycle().GetEventInfluence();
+            if(influence > 1)
+                exchange.difference = influence * 100;
+            else
+                exchange.difference = -influence * 100;
+            exchange.percent = random.nextDouble(0.4)+0.3; //will deal with 30-70% of his current currency
 
         }
         else if (type == TraderType.PSYCHOPATH)  //makes decisions completely randomly?

@@ -302,7 +302,12 @@ public class PoofController implements Initializable {
     public void updateMarketPercentageLabel(String price) {
         Double currentPrice = Double.valueOf(price);
         Double percentage = ((currentPrice - previousPrice) / previousPrice);
+
+        if(previousPrice == 0)
+            percentage = 1.0;
+
         previousPrice = currentPrice; // Update the previousPrice with the currentPrice
+
 
         DecimalFormat decimalFormat = new DecimalFormat("+#.##%;-#.##%");
         String formattedPercentage = decimalFormat.format(percentage); // Create the formatting

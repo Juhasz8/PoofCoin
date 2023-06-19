@@ -173,12 +173,10 @@ public class Network
         if(miningDifficulty == 1 && (miningPowerSum > 40 || fullNode.GetLongestChainSize() == 3))
         {
             miningDifficulty++;
-            System.out.println("mining difficulty increased to " + miningDifficulty + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
         else if (miningDifficulty == 2 && miningPowerSum > 500)
         {
             miningDifficulty++;
-            System.out.println("mining difficulty increased to " + miningDifficulty + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         }
     }
 
@@ -192,8 +190,8 @@ public class Network
 
     public synchronized void NewBlockWasMined(Block newBlock, String luckyMinerPublicKey)
     {
-        System.out.println("miner: + " + luckyMinerPublicKey);
-        System.out.println("is trying to enter method with root: + " + newBlock.dataTree.merkleRoot);
+        //System.out.println("miner: + " + luckyMinerPublicKey);
+        //System.out.println("is trying to enter method with root: + " + newBlock.dataTree.merkleRoot);
         //we notify the full nodes about the new block mined
         fullNode.NotifyNodeThatNewBlockWasMined(new FullNodeBlock(newBlock, luckyMinerPublicKey));
 

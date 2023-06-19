@@ -39,6 +39,7 @@ public class SimulationManager implements Runnable
     private CurrentEventManager eventManager;
 
     private CurrentEvent eventInThisCycle = null;
+    private CurrentEvent eventLastCycle = null;
 
     //for rounding numbers up to 2 decimal
     protected DecimalFormat decFormatter = new DecimalFormat("0.00");
@@ -218,11 +219,22 @@ public class SimulationManager implements Runnable
                     while (isSuspended)
                         wait(10);
 
+                    eventLastCycle = eventInThisCycle;
                     eventInThisCycle = null;
                     GenerateRandomEvent();
 
                     if(eventInThisCycle == null)
-                        DetermineMarketPrice();
+                    {
+                        //there is a 50% chance that the negative event of the last cycle causes the prize to decrease again with the 1/3 of the value
+                        if(random.nextInt(2) == 0 && eventLastCycle != null && eventLastCycle.GetEventInfluence() < 1)
+                        {
+                            double influence = (eventLastCycle.GetEventInfluence() / 3) + (random.nextDouble(.1) - 0.05);
+                            marketPrice *= influence;
+                            SetPriceUI();
+                        }
+                        else
+                            DetermineMarketPrice();
+                    }
                     JoiningPeople();
                     UpdateRequestListening();
 
@@ -237,8 +249,8 @@ public class SimulationManager implements Runnable
 
     private void GenerateRandomEvent()
     {
-        //if the marketprice is not zero, there is a 12.5% chance that an event will occur
-        if(marketPrice == 0 || random.nextInt(8) != 0)
+        //if the marketprice is not zero, there is a 16.7% chance that an event will occur
+        if(marketPrice == 0 || random.nextInt(6) != 0)
             return;
 
         CurrentEvent event = eventManager.GetRandomEvent();
@@ -410,9 +422,6 @@ public class SimulationManager implements Runnable
         //I need a reference to all the transaction requests that has happened since the last update cycle
         //based on their amounts, we change the value of market price
 
-        //if(Network.getInstance().networkUsers.size() > 1)
-
-
         if (marketPrice == 0)
         {
             marketPriceChange += random.nextFloat(2) + 0.5; //random number between 0.5 and 2.5
@@ -463,10 +472,17 @@ public class SimulationManager implements Runnable
 
     private double CapMarketPriceChange(double marketPriceChange)
     {
-        //can only change max 15%
-        if (marketPriceChange > marketPrice * 0.15)
-            marketPriceChange = marketPrice * (random.nextDouble(0.05)+0.15);
-        else if (marketPriceChange < -marketPrice * 0.15)
+        if (marketPrice > 500 && marketPriceChange > marketPrice * 0.05) //marketprice is bigger than 500, and the change is bigger than 5%, then cap it under 7.5%
+            marketPriceChange = marketPrice * (random.nextDouble(0.025)+0.05);
+        if (marketPrice > 250 && marketPriceChange > marketPrice * 0.1) //marketprice is bigger than 250, and the change is bigger than 10%, then cap it under 12.5%
+            marketPriceChange = marketPrice * (random.nextDouble(0.025)+0.1);
+        if (marketPrice > 100 && marketPriceChange > marketPrice * 0.15) //marketprice is bigger than 100, and the change is bigger than 15%, then cap it under 15%
+            marketPriceChange = marketPrice * (random.nextDouble(0.025)+0.125);
+        else if(marketPrice > 50 && marketPriceChange > marketPrice * 0.25) //marketprice is bigger than 50, and the change is bigger than 25%, then cap it under 35%
+            marketPriceChange = marketPrice * (random.nextDouble(0.1)+0.2);
+        else if (marketPriceChange > marketPrice * 2) //the change is bigger than 200%, then cap it under 200%
+            marketPriceChange = marketPrice * (random.nextDouble(0.5)+1.5);
+        else if (marketPriceChange < -marketPrice * 0.2) //the change is negative and bigger than 20%, then cap it under 20%
             marketPriceChange = -marketPrice * (random.nextDouble(0.05)+0.15);
 
         return marketPriceChange;

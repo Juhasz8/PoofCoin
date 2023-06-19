@@ -5,36 +5,37 @@ public class CurrentEventManager
 {
     Random random = new Random();
 
-    // Category 1 events. 5% Probability.
+    // Category 1 events. 10% Probability.
     List<CurrentEvent> category1 = Arrays.asList(
-            new CurrentEvent("A major government adopts the cryptocurrency as its official currency.", 5, 50, 50, 50, 1.55),
-            new CurrentEvent("A significant vulnerability is discovered in the cryptocurrency's underlying technology.", 5, 80, 50, 50, 0.25),
-            new CurrentEvent("The cryptocurrency is recognized as a global reserve currency by a major financial institution.", 5, 100, 50, 50, 1.35)
+            new CurrentEvent("A major government adopts the cryptocurrency as its official currency.", 5, 50, 50, 50, 1.75),
+            new CurrentEvent("A major company operating crypto exchange announces bankruptcy.", 5, 50, 50, 50, 0.15),
+            new CurrentEvent("The cryptocurrency is recognized as a global reserve currency by a major financial institution.", 5, 100, 50, 50, 1.65),
+            new CurrentEvent("A prominent celebrity publicly endorses the cryptocurrency.", 15, 5, 50, 50, 1.7),
+            new CurrentEvent("Regulatory authorities introduce favorable regulations for the cryptocurrency.", 15, 10, 50, 50, 1.3)
     );
 
-    // Category 2 events. 15% Probability.
+    // Category 2 events. 20% Probability.
     List<CurrentEvent> category2 = Arrays.asList(
-            new CurrentEvent("A prominent celebrity publicly endorses the cryptocurrency.", 15, 5, 50, 50, 1.2),
-            new CurrentEvent("Regulatory authorities introduce favorable regulations for the cryptocurrency.", 15, 10, 50, 50, 1.2),
-            new CurrentEvent("A major merchant starts accepting the cryptocurrency as a form of payment.", 15, 10, 50, 50, 1.1),
-            new CurrentEvent("The cryptocurrency's development team announces a breakthrough technological advancement.", 15, 40, 50, 50, 1.3)
+            new CurrentEvent("A significant vulnerability is discovered in the cryptocurrency's underlying technology.", 5, 80, 50, 50, 0.25),
+            new CurrentEvent("A major merchant starts accepting the cryptocurrency as a form of payment.", 15, 10, 50, 50, 1.2),
+            new CurrentEvent("The cryptocurrency's development team announces a breakthrough technological advancement.", 15, 40, 50, 50, 1.25),
+            new CurrentEvent("The cryptocurrency's development team faces internal conflicts and slows down progress.", 50, 20, 50, 50, 0.65)
     );
 
     // Category 3 events. 30% Probability.
     List<CurrentEvent> category3 = Arrays.asList(
             new CurrentEvent("A significant security breach occurs in a major cryptocurrency exchange.", 30, 40, 50, 50, 0.8),
-            new CurrentEvent("A large-scale hack targets multiple wallets holding the cryptocurrency.", 30, 50, 50, 50, 0.8),
-            new CurrentEvent("The cryptocurrency's community successfully implements a major upgrade.", 30, 20, 50, 50, 1.1),
+            new CurrentEvent("A large-scale hack targets multiple wallets holding the cryptocurrency.", 30, 50, 50, 50, 0.75),
+            new CurrentEvent("The cryptocurrency's community successfully implements a major upgrade.", 30, 20, 50, 50, 1.25),
             new CurrentEvent("The cryptocurrency experiences a surge in adoption in a specific geographic region.", 30, 5, 50, 50, 1.05),
-            new CurrentEvent("Negative media coverage highlights the involvement of the cryptocurrency in illicit activities.", 30, 5, 50, 50, 0.85)
+            new CurrentEvent("Negative media coverage highlights the involvement of the cryptocurrency in illicit activities.", 30, 5, 50, 50, 0.85),
+            new CurrentEvent("A competing cryptocurrency gains substantial popularity and market share.", 50, 10, 50, 50, 0.7)
     );
 
-    // Category 4 events. 50% Probability.
+    // Category 4 events. 40% Probability.
     List<CurrentEvent> category4 = Arrays.asList(
             new CurrentEvent("A market-wide correction leads to a temporary decline in the cryptocurrency's price.",50, 5, 50, 50, 0.95),
-            new CurrentEvent("A competing cryptocurrency gains substantial popularity and market share.", 50, 10, 50, 50, 0.9),
             new CurrentEvent("Economic instability in a major country prompts investors to seek alternative assets.", 50, 10, 50, 50, 1.1),
-            new CurrentEvent("The cryptocurrency's development team faces internal conflicts and slows down progress.", 50, 20, 50, 50, 0.9),
             new CurrentEvent("A prominent regulatory body issues a warning or imposes restrictions on the cryptocurrency.", 50, 20, 50, 50, 0.9)
     );
 
@@ -85,11 +86,11 @@ public class CurrentEventManager
         int randomEventI = random.nextInt(100);
         CurrentEvent randomEvent;
 
-        if(randomEventI < 5)
+        if(randomEventI < 10)
             randomEvent = category1.get(random.nextInt(category1.size()));
-        else if (randomEventI < 20)
+        else if (randomEventI < 30)
             randomEvent = category2.get(random.nextInt(category2.size()));
-        else if (randomEventI < 50)
+        else if (randomEventI < 60)
             randomEvent = category3.get(random.nextInt(category3.size()));
         else
             randomEvent = category4.get(random.nextInt(category4.size()));
