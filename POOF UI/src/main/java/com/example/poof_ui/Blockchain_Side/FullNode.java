@@ -59,7 +59,7 @@ public class FullNode
             TrustABlock(newFullNodeBlock);
             Network.getInstance().NotifyMinersAboutNewBlockMined(newFullNodeBlock);
 
-            DebugPrintingOfBlockchains();
+            //DebugPrintingOfBlockchains();
             return;
         }
 

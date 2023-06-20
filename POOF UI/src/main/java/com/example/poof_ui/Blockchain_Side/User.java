@@ -26,7 +26,6 @@ public abstract class User extends Thread
 
     protected boolean isSuspended = false;
 
-
     public Random random = new Random();
 
     //for rounding numbers up to 2 decimal

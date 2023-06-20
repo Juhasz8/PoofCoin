@@ -164,8 +164,8 @@ public class Miner extends User
         if(hash.substring(0, Network.getInstance().GetDifficulty()).equals(target))
         {
             //New Block mined successfully!!
-            System.out.println("--------------------");
-            System.out.println("I mined a block successfully!! " + name + "_" + publicKeyString);
+            //System.out.println("--------------------");
+            //System.out.println("I mined a block successfully!! " + name + "_" + publicKeyString);
             myblock.BlockMined(hash);
 
             //we have to notify everyone on the network that we are the lottery winners
@@ -281,12 +281,12 @@ public class Miner extends User
         //check if the new block mined by someone else is trusted by you or not
         if(!newBlock.GetMerkleRoot().equals(myblock.GetMerkleRoot()))
         {
-            System.out.println("I am " +name + " I DON'T trust the new block! " + myblock.GetMerkleRoot() + " vs " + newBlock.GetMerkleRoot() + " because num of trans: " + myblock.dataTree.transactions.size() + " vs " + newBlock.dataTree.transactions.size());
+            //System.out.println("I am " +name + " I DON'T trust the new block! " + myblock.GetMerkleRoot() + " vs " + newBlock.GetMerkleRoot() + " because num of trans: " + myblock.dataTree.transactions.size() + " vs " + newBlock.dataTree.transactions.size());
             //either the miner of the new block is trying to cheat or this miner is trying to cheat
             //so you keep mining your block
             return;
         }
-        System.out.println("I am " + name + " I trust the new block! " + myblock.GetMerkleRoot());
+        //System.out.println("I am " + name + " I trust the new block! " + myblock.GetMerkleRoot());
 
         //this miner trusts the block that was mined by someone else because it contains the same transactions
         ITrustANewBlock(newBlock.hash);
